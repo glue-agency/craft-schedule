@@ -1,5 +1,6 @@
 {% extends "_layouts/cp" %}
 
+{% do view.registerAssetBundle('panlatent\\schedule\\web\\assets\\timers\\TimersAsset') %}
 {% set schedule = schedule is defined ? schedule : craft.schedule.schedules.getScheduleById(scheduleId) %}
 {% set timers = timers is defined ? timers : schedule.timers %}
 {% set title = "Timers"|t('schedule') %}
@@ -16,6 +17,8 @@
 {% set crumbs = crumbs|merge([
     {label: schedule, url: url('schedule/' ~ schedule.id)},
 ]) %}
+
+{% import "_includes/forms" as forms %}
 
 {% block actionButton %}
     <a href="{{ url('schedule/' ~ schedule.id ~ '/timers/new') }}" class="btn submit icon add">{{ "New timer"|t('schedule') }}</a>
@@ -43,7 +46,7 @@
                     <th scope="row" data-title="{{ 'No.'|t('schedule') }}"><a href="{{ url('schedule/' ~ timer.scheduleId ~ '/timers/' ~ timer.id) }}">{{ timer }}</a></th>
                     <td data-title="{{ 'Type'|t('app') }}">{{ timer.displayName|title|t('app') }}</td>
                     <td data-title="{{ 'When'|t('schedule') }}">{{ timer.cronDescription }}</td>
-                    <td>{% if timer.enabled %}<span data-icon="check"></span>{% endif %}</td>
+                    <td>{{ forms.lightswitchField({name: 'enabled', small: true, on: timer.enabled}) }}</td>
                     {% if sortable %}<td class="thin"><a class="move icon" title="{{ 'Reorder'|t('app') }}" role="button"></a></td>{% endif %}
                     <td class="thin"><a class="delete icon" title="{{ 'Delete'|t('app') }}" role="button"></a></td>
                 </tr>

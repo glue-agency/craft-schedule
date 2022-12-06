@@ -95,6 +95,8 @@ return [
     'Confirm clear all schedule logs?' => '确定要清除所有计划日志？',
     'Schedule enabled.' => '计划已启用。',
     'Schedule disabled.' => '计划已禁用。',
+    'Timer enabled.' => '????',
+    'Timer disabled.' => '????',
     'DateTime' => '固定时间',
     'At {datetime}' => '在 {datetime}',
     'Last running at' => '最后运行于',
