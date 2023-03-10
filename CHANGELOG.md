@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
-### Added
-### Updated
-### Fixed
-
 ## [0.4.0] - 2022-06-20
 ### Updated
 - Craft 4 Support.
+
+## [0.3.3] - 2023-03-10
+### Added
+- Add `schedules/clear-logs` command.
+- Add support for Craft CMS 3.7.
+
+### Updated
+- Allow timers to be disabled and enabled from the timers overview.
 
 ## [0.3.2] - 2021-12-09
 ### Added

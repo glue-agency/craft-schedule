@@ -145,6 +145,32 @@ class TimersController extends Controller
     }
 
     /**
+     * @return Response
+     */
+    public function actionToggleTimer(): Response
+    {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $timers = Plugin::$plugin->getTimers();
+        $request = Craft::$app->getRequest();
+
+        $timer = $timers->getTimerById($request->getBodyParam('id'));
+        if (!$timer) {
+            return $this->asJson(['success' => false]);
+        }
+        /** @var Timer $timer */
+        $timer->enabled = (bool)$request->getBodyParam('enabled');
+
+        if (!$timers->saveTimer($timer)) {
+            var_dump($timer->getErrors());
+            return $this->asJson(['success' => false]);
+        }
+
+        return $this->asJson(['success' => true]);
+    }
+
+    /**
      * Delete a timer.
      *
      * @return Response

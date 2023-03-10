@@ -94,6 +94,8 @@ return [
     'Confirm clear all schedule logs?' => '确定要清除所有计划日志？',
     'Schedule enabled.' => '计划已启用。',
     'Schedule disabled.' => '计划已禁用。',
+    'Timer enabled.' => '????',
+    'Timer disabled.' => '????',
     'DateTime' => '固定时间',
     'At {datetime}' => '在 {datetime}',
     'Last running at' => '最后运行于',
@@ -111,4 +113,6 @@ return [
     'Add Header Value' => '添加首部值',
     'Add URL Parameter' => '添加 URL 参数',
     'Add Value' => '添加值',
+    'Expiry threshold' => '????',
+    'Default expiry time used when calling the `schedules/clear-logs` command.' => '???? `schedules/clear-logs`',
 ];
