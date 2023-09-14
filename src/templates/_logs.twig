@@ -5,9 +5,8 @@
     {% exit 404 %}
 {% endif %}
 
-{% set showSchedule = false %}
 {% set selectedSubnavItem = 'schedule' %}
-{% set title = "Logs"|t('schedule') %}
+{% set title = "Logs for '{name}'"|t('schedule', {name: schedule.name}) %}
 {% set crumbs = [
     {
         label: 'Schedules'|t('schedule'),
@@ -25,8 +24,12 @@
     sortOrder: 'logs.id DESC',
 } %}
 
+{% set totalLogs = craft.schedule.logs.getTotalLogs(criteria) %}
+
 {% block actionButton %}
-    <a id="delete-all" class="btn submit">{{ 'Delete all logs'|t('schedule') }}</a>
+    {% if totalLogs %}
+        <a id="delete-all" class="btn submit">{{ "Delete logs for '{name}'"|t('schedule', {name: schedule.name}) }}</a>
+    {% endif %}
 {% endblock %}
 
 {% js %}

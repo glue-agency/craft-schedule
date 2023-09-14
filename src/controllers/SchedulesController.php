@@ -15,6 +15,8 @@ use panlatent\schedule\base\ScheduleInterface;
 use panlatent\schedule\models\ScheduleGroup;
 use panlatent\schedule\Plugin;
 use panlatent\schedule\schedules\HttpRequest;
+use Throwable;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -212,6 +214,8 @@ class SchedulesController extends Controller
 
     /**
      * @return Response
+     * @throws BadRequestHttpException
+     * @throws Throwable
      */
     public function actionToggleSchedule(): Response
     {

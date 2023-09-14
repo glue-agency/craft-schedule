@@ -2,6 +2,8 @@
 
 {% set fullPageForm = true %}
 
+{% set title = isNewTimer ? "New timer for '{name}'"|t('schedule', {name: schedule.name}) : "Edit timer '{title}' for  '{name}'"|t('schedule', {title: title ,name: schedule.name}) %}
+
 {% import "_includes/forms" as forms %}
 
 {% block content %}

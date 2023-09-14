@@ -16,6 +16,9 @@ use panlatent\schedule\base\Timer;
 use panlatent\schedule\base\TimerInterface;
 use panlatent\schedule\Plugin;
 use panlatent\schedule\timers\Custom;
+use Throwable;
+use yii\base\InvalidConfigException;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -35,6 +38,7 @@ class TimersController extends Controller
      * @param int|null $timerId
      * @param TimerInterface|null $timer
      * @return Response
+     * @throws InvalidConfigException
      */
     public function actionEditTimer(int $scheduleId = null, int $timerId = null, TimerInterface $timer = null): Response
     {
@@ -62,6 +66,8 @@ class TimersController extends Controller
         } else {
             $schedule = $timer->getSchedule();
         }
+
+        $isNewTimer = $timer->getIsNew();
 
         if (!$schedule) {
             throw new NotFoundHttpException();
@@ -93,6 +99,8 @@ class TimersController extends Controller
 
 
         return $this->renderTemplate('schedule/timers/_edit', [
+            'isNewTimer' => $isNewTimer,
+            'schedule' => $schedule,
             'timer' => $timer,
             'timerInstances' => $timerInstances,
             'timerTypes' => $allTimerTypes,
@@ -171,6 +179,34 @@ class TimersController extends Controller
         return $this->asJson([
             'success' => true,
         ]);
+    }
+
+    /**
+     * @return Response
+     * @throws BadRequestHttpException
+     * @throws Throwable
+     */
+    public function actionToggleTimer(): Response
+    {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $timers = Plugin::$plugin->getTimers();
+        $request = Craft::$app->getRequest();
+
+        $timer = $timers->getTimerById($request->getBodyParam('id'));
+        if (!$timer) {
+            return $this->asJson(['success' => false]);
+        }
+        /** @var Schedule $schedule */
+        $timer->enabled = (bool)$request->getBodyParam('enabled');
+
+        if (!$timers->saveTimer($timer)) {
+            var_dump($timer->getErrors());
+            return $this->asJson(['success' => false]);
+        }
+
+        return $this->asJson(['success' => true]);
     }
 
     /**

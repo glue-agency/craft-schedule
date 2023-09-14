@@ -30,7 +30,10 @@ use panlatent\schedule\schedules\Event;
 use panlatent\schedule\schedules\HttpRequest;
 use panlatent\schedule\schedules\MissingSchedule;
 use panlatent\schedule\schedules\Queue;
+use Throwable;
 use yii\base\Component;
+use yii\base\InvalidConfigException;
+use yii\db\Exception;
 use yii\db\Expression;
 use yii\db\Query;
 
@@ -162,7 +165,7 @@ class Schedules extends Component
      * @param int $groupId
      * @return ScheduleGroup|null
      */
-    public function getGroupById(int $groupId)
+    public function getGroupById(int $groupId): ?ScheduleGroup
     {
         if ($this->_groupsById && array_key_exists($groupId, $this->_groupsById)) {
             return $this->_groupsById[$groupId];
@@ -185,7 +188,7 @@ class Schedules extends Component
      * @param string $name
      * @return ScheduleGroup|null
      */
-    public function getGroupByHandle(string $name)
+    public function getGroupByHandle(string $name): ?ScheduleGroup
     {
         if ($this->_groupsByName && array_key_exists($name, $this->_groupsByName)) {
             return $this->_groupsByName[$name];
@@ -208,7 +211,7 @@ class Schedules extends Component
      * @param mixed $config
      * @return ScheduleGroup
      */
-    public function createGroup($config): ScheduleGroup
+    public function createGroup(mixed $config): ScheduleGroup
     {
         return new ScheduleGroup($config);
     }
@@ -219,6 +222,7 @@ class Schedules extends Component
      * @param ScheduleGroup $group
      * @param bool $runValidation
      * @return bool
+     * @throws ScheduleGroupException
      */
     public function saveGroup(ScheduleGroup $group, bool $runValidation = true): bool
     {
@@ -267,6 +271,7 @@ class Schedules extends Component
      *
      * @param ScheduleGroup $group
      * @return bool
+     * @throws Exception
      */
     public function deleteGroup(ScheduleGroup $group): bool
     {
@@ -315,6 +320,7 @@ class Schedules extends Component
 
     /**
      * @return ScheduleInterface[]
+     * @throws InvalidConfigException
      */
     public function getAllSchedules(): array
     {
@@ -342,6 +348,7 @@ class Schedules extends Component
 
     /**
      * @return ScheduleInterface[]
+     * @throws InvalidConfigException
      */
     public function getActiveSchedules(): array
     {
@@ -351,16 +358,25 @@ class Schedules extends Component
     }
 
     /**
-     * @param int|null $groupId
+     * @param int|string|null $groupId
      * @return ScheduleInterface[]
+     * @throws InvalidConfigException
      */
-    public function getSchedulesByGroupId(int $groupId = null): array
+    public function getSchedulesByGroupId(int|string $groupId = null): array
     {
         $schedules = [];
 
-        $results = $this->_createScheduleQuery()
-            ->where(['groupId' => $groupId])
-            ->all();
+        if ($groupId === null) {
+            $results = $this->_createScheduleQuery()
+                ->orderBy('name')
+                ->all();
+
+        } else {
+            if ($groupId === 'ungrouped') $groupId = null;
+            $results = $this->_createScheduleQuery()
+                ->where(['groupId' => $groupId])
+                ->all();
+        }
 
         foreach ($results as $result) {
             /** @var Schedule $schedule */
@@ -376,8 +392,9 @@ class Schedules extends Component
     /**
      * @param int $scheduleId
      * @return ScheduleInterface|null
+     * @throws InvalidConfigException
      */
-    public function getScheduleById(int $scheduleId)
+    public function getScheduleById(int $scheduleId): ?ScheduleInterface
     {
         if ($this->_schedulesById && array_key_exists($scheduleId, $this->_schedulesById)) {
             return $this->_schedulesById[$scheduleId];
@@ -397,8 +414,9 @@ class Schedules extends Component
     /**
      * @param string $handle
      * @return ScheduleInterface|null
+     * @throws InvalidConfigException
      */
-    public function getScheduleByHandle(string $handle)
+    public function getScheduleByHandle(string $handle): ?ScheduleInterface
     {
         if ($this->_schedulesByHandle && array_key_exists($handle, $this->_schedulesByHandle)) {
             return $this->_schedulesByHandle[$handle];
@@ -416,10 +434,11 @@ class Schedules extends Component
     }
 
     /**
-     * @param ScheduleCriteria|array $criteria
+     * @param array|ScheduleCriteria $criteria
      * @return ScheduleInterface[]
+     * @throws InvalidConfigException
      */
-    public function findSchedules($criteria): array
+    public function findSchedules(array|ScheduleCriteria $criteria): array
     {
         if (!$criteria instanceof ScheduleCriteria) {
             $criteria = new ScheduleCriteria($criteria);
@@ -442,10 +461,11 @@ class Schedules extends Component
     }
 
     /**
-     * @param ScheduleCriteria|array $criteria
+     * @param array|ScheduleCriteria $criteria
      * @return ScheduleInterface|null
+     * @throws InvalidConfigException
      */
-    public function findSchedule($criteria)
+    public function findSchedule(array|ScheduleCriteria $criteria): ?ScheduleInterface
     {
         if (!$criteria instanceof ScheduleCriteria) {
             $criteria = new ScheduleCriteria($criteria);
@@ -462,10 +482,10 @@ class Schedules extends Component
     }
 
     /**
-     * @param ScheduleCriteria|array $criteria
+     * @param array|ScheduleCriteria $criteria
      * @return int
      */
-    public function getTotalSchedules($criteria = []): int
+    public function getTotalSchedules(array|ScheduleCriteria $criteria = []): int
     {
         if (!$criteria instanceof ScheduleCriteria) {
             $criteria = new ScheduleCriteria($criteria);
@@ -479,6 +499,7 @@ class Schedules extends Component
     /**
      * @param Request|null $request
      * @return ScheduleInterface
+     * @throws InvalidConfigException
      */
     public function createScheduleFromRequest(Request $request = null): ScheduleInterface
     {
@@ -504,8 +525,9 @@ class Schedules extends Component
     /**
      * @param mixed $config
      * @return ScheduleInterface
+     * @throws InvalidConfigException
      */
-    public function createSchedule($config): ScheduleInterface
+    public function createSchedule(mixed $config): ScheduleInterface
     {
         try {
             $schedule = ComponentHelper::createComponent($config, ScheduleInterface::class);
@@ -571,7 +593,7 @@ class Schedules extends Component
             }
 
             $transaction->commit();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $transaction->rollBack();
 
             throw $exception;
@@ -612,7 +634,7 @@ class Schedules extends Component
                 ])->execute();
             }
             $transaction->commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $transaction->rollBack();
 
             throw $e;
@@ -649,7 +671,7 @@ class Schedules extends Component
             $transaction->commit();
 
             $schedule->afterDelete();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $transaction->rollBack();
 
             throw $exception;
@@ -709,7 +731,7 @@ class Schedules extends Component
      * @param Query $query
      * @param ScheduleCriteria $criteria
      */
-    private function _applyConditions(Query $query, ScheduleCriteria $criteria)
+    private function _applyConditions(Query $query, ScheduleCriteria $criteria): void
     {
         if ($criteria->enabledLog !== null) {
             $query->andWhere(Db::parseParam('schedules.enabledLog', $criteria->enabledLog));

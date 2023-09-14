@@ -7,10 +7,12 @@
 
 namespace panlatent\schedule\plugin;
 
+use craft\errors\DeprecationException;
 use panlatent\schedule\Builder;
 use panlatent\schedule\services\Logs;
 use panlatent\schedule\services\Schedules;
 use panlatent\schedule\services\Timers;
+use yii\base\InvalidConfigException;
 
 /**
  * Trait Services
@@ -33,11 +35,12 @@ trait Services
     }
 
     /**
+     * @return Builder|null
+     * @throws InvalidConfigException|DeprecationException
      * @deprecated
      * @see createBuilder()
-     * @return Builder|object|null
      */
-    public function getBuilder()
+    public function getBuilder(): Builder|null
     {
         \Craft::$app->getDeprecator()->log('schedule.getBuilder()', 'This method has been deprecated, singleton objects will have bad problems in persistent mode.');
         return $this->get('builder');
@@ -45,6 +48,7 @@ trait Services
 
     /**
      * @return Schedules
+     * @throws InvalidConfigException
      */
     public function getSchedules(): Schedules
     {
@@ -53,6 +57,7 @@ trait Services
 
     /**
      * @return Timers
+     * @throws InvalidConfigException
      */
     public function getTimers(): Timers
     {
@@ -61,6 +66,7 @@ trait Services
 
     /**
      * @return Logs
+     * @throws InvalidConfigException
      */
     public function getLogs(): Logs
     {
@@ -70,7 +76,7 @@ trait Services
     /**
      * Set service components.
      */
-    private function _setComponents()
+    private function _setComponents(): void
     {
         $this->setComponents([
             'builder' => Builder::class,

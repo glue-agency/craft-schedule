@@ -125,7 +125,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @inheritdoc
      */
-    public function attributes()
+    public function attributes(): array
     {
         $attributes = parent::attributes();
         $attributes[] = 'lastFinishedDate';
@@ -147,7 +147,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'name' => Craft::t('app', 'Name'),
@@ -167,7 +167,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @return ScheduleGroup|null
      */
-    public function getGroup()
+    public function getGroup(): ?ScheduleGroup
     {
         if ($this->_group !== null) {
             return $this->_group;
@@ -201,7 +201,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @param TimerInterface[]|null $timers
      */
-    public function setTimers(array $timers)
+    public function setTimers(array $timers): void
     {
         $this->_timers = $timers;
     }
@@ -242,7 +242,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @return DateTime|null
      */
-    public function getLastFinishedDate()
+    public function getLastFinishedDate(): ?DateTime
     {
         if ($this->_lastFinishedDate !== null) {
             return $this->_lastFinishedDate;
@@ -272,10 +272,9 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @inheritdoc
      */
-    public function build(Builder $builder)
+    public function build(Builder $builder): void
     {
         if (static::isRunnable()) {
-            /** @noinspection PhpParamsInspection */
             foreach ($this->getActiveTimers() as $timer) {
                 $builder->call([$this, 'run'])
                     ->cron($timer->getCronExpression());
@@ -325,9 +324,6 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function beforeRun(): bool
     {
         if ($this->hasEventHandlers(self::EVENT_BEFORE_RUN)) {
@@ -347,10 +343,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function afterRun(bool $successful)
+    public function afterRun(bool $successful): void
     {
         if ($this->hasEventHandlers(self::EVENT_AFTER_RUN)) {
             $this->trigger(self::EVENT_AFTER_RUN, new ScheduleEvent([

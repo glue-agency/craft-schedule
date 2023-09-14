@@ -23,10 +23,10 @@ class TimerEvent extends Event
     /**
      * @var TimerInterface|null
      */
-    public $timer;
+    public ?TimerInterface $timer;
 
     /**
      * @var bool
      */
-    public $isNew = false;
+    public bool $isNew = false;
 }

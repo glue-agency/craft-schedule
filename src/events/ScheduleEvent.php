@@ -21,10 +21,10 @@ class ScheduleEvent extends Event
     /**
      * @var ScheduleInterface
      */
-    public $schedule;
+    public ScheduleInterface $schedule;
 
     /**
      * @var bool
      */
-    public $isNew = false;
+    public bool $isNew = false;
 }

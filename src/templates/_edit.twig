@@ -4,10 +4,16 @@
 {% set title = isNewSchedule ? 'New a schedule'|t('schedule') : 'Edit: {name}'|t('schedule', {name: schedule.name}) %}
 {% set selectedSubnavItem = "schedules" %}
 {% set fullPageForm = true %}
-{% set crumbs = [{
-    label: 'Schedule'|t('schedule'),
-    url: url('schedule')
-}] %}
+{% set crumbs = [
+    {
+        label: 'Schedule'|t('schedule'),
+        url: url('schedule')
+    },
+    {
+        label: schedule.group ? schedule.group.name : 'Ungrouped'|t('schedule'),
+        url: schedule.group ? url('schedule/groups/'~schedule.group.id) : url('schedule/groups/ungrouped'),
+    }
+] %}
 
 {% set tabs = [
     {label: "Settings"|t('app'), url: '#settings'},
@@ -99,7 +105,31 @@
             errors: schedule.getErrors('enabled'),
         }) }}
     </div>
+    <div class="meta" style="padding-bottom: 16px;">
+        <div class="data h3">
+            <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}" style="font-weight: bold; color: inherit; text-decoration: underline">{{ 'Timers'|t('schedule') }}</a>
+        </div>
+        {% if schedule.timers|length == 0 %}
+            <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}">{{ "Add Timers"|t('schedule') }}</a>
+        {% else %}
+            <ul>
+                {% for timer in schedule.timers %}
+                    <li {% if not loop.first %}style="margin-top: 12px;"{% endif %}>
+                        <a href="{{ url('schedule/' ~ schedule.id ~ '/timers/' ~ timer.id) }}">{{ timer ~ ' ' ~ timer.cronDescription }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <div class="heading mb-4">
+                <a href="{{ url('schedule/' ~ schedule.id ~ '/timers/new') }}" class="btn">{{ "Add Timer"|t('schedule') }}</a>
+            </div>
+        {% endif %}
+    </div>
     <div class="meta read-only">
+        <div class="data">
+            <h5 class="heading">{{ "Logs"|t('schedule') }}</h5>
+            <div class="value"><a class="go" href="{{ url('schedule/' ~ schedule.id ~ '/logs') }}">{{ "Logs"|t('schedule') }}</a></div>
+        </div>
         <div class="data">
             <h5 class="heading">{{ "Created at"|t('app') }}</h5>
             <div class="value">{{ schedule.dateCreated|datetime('short') }}</div>

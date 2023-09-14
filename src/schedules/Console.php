@@ -53,7 +53,7 @@ class Console extends Schedule
     /**
      * @var string|null
      */
-    public $command;
+    public ?string $command;
 
     /**
      * @var string|null
@@ -81,7 +81,6 @@ class Console extends Schedule
             $this->command,
             $this->arguments,
         ];
-
         if ($this->user) {
             $command = array_merge(['sudo -u', $this->user], $command);
         }

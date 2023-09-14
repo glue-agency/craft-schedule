@@ -18,7 +18,10 @@
     <nav>
         <ul id="groups">
             <li>
-                <a href="{{ url('schedule') }}"{% if not groupId %} class="sel"{% endif %}>{{ 'Ungrouped'|t('schedule') }}</a>
+                <a href="{{ url('schedule') }}"{% if not groupId %} class="sel"{% endif %}>{{ 'All'|t('schedule') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('schedule/groups/ungrouped') }}"{% if groupId == 'ungrouped' %} class="sel"{% endif %}>{{ 'Ungrouped'|t('schedule') }}</a>
             </li>
             {% for group in groups %}
                 <li>
@@ -45,12 +48,14 @@
 
 {% block content %}
     {% if schedules|length %}
-        {% set sortable  = (schedules|length > 1) %}
+        {% set sortable  = (schedules|length > 1 and groupId) %}
 
         <table id="schedules" class="data fullwidth collapsible">
             <thead>
             <th scope="col">{{ "Name"|t('app') }}</th>
-            <th scope="col">{{ "Handle"|t('app') }}</th>
+            {% if not groupId %}
+                <th scope="col">{{ "Group"|t('app') }}</th>
+            {% endif %}
             <th scope="col">{{ "Type"|t('app') }}</th>
             <th scope="col">{{ "Timers"|t('schedule') }}</th>
             <th scope="col">{{ "Last Running Date"|t('schedule') }}</th>
@@ -65,7 +70,15 @@
                 <tr data-id="{{ schedule.id }}" data-name="{{ schedule.name|t('site') }}">
                     <th scope="row" data-title="{{ 'Name'|t('app') }}"><a
                                 href="{{ url('schedule/' ~ schedule.id) }}">{{ schedule.name }}</a></th>
-                    <td data-title="{{ 'Handle'|t('app') }}" class="code">{{ schedule.handle }}</td>
+                    {% if not groupId %}
+                        <th data-title="{{ 'Group'|t('app') }}">
+                            {% set groupUrl = url('schedule/groups/ungrouped') %}
+                            {% if schedule.group %}
+                                {% set groupUrl = url('schedule/groups/'~schedule.group.id) %}
+                            {% endif %}
+                            <a href="{{ groupUrl }}">{{ schedule.group ? schedule.group.name : 'Ungrouped'|t('schedule') }}</a>
+                        </th>
+                    {% endif %}
                     <td data-title="{{ 'Type'|t('app') }}">
                         {% if schedule is missing %}
                             <span class="error">{{ schedule.expectedType }}</span>

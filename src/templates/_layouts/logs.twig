@@ -2,7 +2,7 @@
 
 {% set showSchedule = showSchedule is defined ? showSchedule : true %}
 {% set criteria = criteria is defined ? criteria : {} %}
-{% set title = "Logs"|t('schedule') %}
+
 
 {% set page = page is defined ? page : craft.app.request.getQueryParam('page', 1) %}
 {% set pageSize = pageSize is defined ? pageSize : 50 %}
@@ -21,6 +21,7 @@
 {% set logs = craft.schedule.logs.findLogs(criteria) %}
 
 {% block content %}
+    {% set title = "Logs"|t('schedule') %}
     <div id="nologs"{% if logs %} class="hidden"{% endif %}>{{ 'No logs exists yet.'|t('schedule') }}</div>
 
     {% if logs|length %}
