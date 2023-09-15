@@ -2,26 +2,26 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\models;
+namespace GlueAgency\schedule\models;
 
 use craft\base\Model;
 use DateTime;
-use panlatent\schedule\base\ScheduleInterface;
-use panlatent\schedule\helpers\PrecisionDateTimeHelper;
-use panlatent\schedule\Plugin;
+use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\helpers\PrecisionDateTimeHelper;
+use GlueAgency\schedule\Plugin;
 use yii\base\InvalidConfigException;
 
 /**
  * Class ScheduleLog
  *
- * @package panlatent\schedule\models
+ * @package GlueAgency\schedule\models
  * @property-read ScheduleInterface $schedule
  * @property-read int $duration
  * @property-read DateTime|null $startDate
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class ScheduleLog extends Model
 {

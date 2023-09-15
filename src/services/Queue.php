@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\services;
+namespace GlueAgency\schedule\services;
 
 use craft\base\Component;
 

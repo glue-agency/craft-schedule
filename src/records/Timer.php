@@ -2,18 +2,18 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\records;
+namespace GlueAgency\schedule\records;
 
 use craft\db\ActiveRecord;
-use panlatent\schedule\db\Table;
+use GlueAgency\schedule\db\Table;
 
 /**
  * Class Timer
  *
- * @package panlatent\schedule\records
+ * @package GlueAgency\schedule\records
  * @property int $id
  * @property int $scheduleId
  * @property string $type
@@ -25,7 +25,7 @@ use panlatent\schedule\db\Table;
  * @property string $settings
  * @property bool $enabled
  * @property int $sortOrder
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class Timer extends ActiveRecord
 {

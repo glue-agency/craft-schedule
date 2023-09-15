@@ -2,35 +2,35 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule;
+namespace GlueAgency\schedule;
 
 use Craft;
 use craft\base\Model;
 use craft\events\RegisterUserPermissionsEvent;
 use craft\helpers\UrlHelper;
 use craft\services\UserPermissions;
+use craft\web\Response;
 use craft\web\twig\variables\CraftVariable;
-use panlatent\schedule\console\SchedulesController;
-use panlatent\schedule\models\Settings;
-use panlatent\schedule\plugin\Routes;
-use panlatent\schedule\plugin\Services;
-use panlatent\schedule\user\Permissions;
-use panlatent\schedule\web\twig\CraftVariableBehavior;
+use GlueAgency\schedule\console\SchedulesController;
+use GlueAgency\schedule\models\Settings;
+use GlueAgency\schedule\plugin\Routes;
+use GlueAgency\schedule\plugin\Services;
+use GlueAgency\schedule\user\Permissions;
+use GlueAgency\schedule\web\twig\CraftVariableBehavior;
 use yii\base\Event;
 use yii\base\InvalidRouteException;
 use yii\console\Application;
-use yii\console\Response;
 
 /**
  * Class Plugin
  *
- * @package panlatent\schedule
+ * @package GlueAgency\schedule
  * @method Settings getSettings()
  * @property-read Settings $settings
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class Plugin extends \craft\base\Plugin
 {

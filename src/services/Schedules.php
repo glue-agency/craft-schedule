@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\services;
+namespace GlueAgency\schedule\services;
 
 use Craft;
 use craft\errors\MissingComponentException;
@@ -14,22 +14,22 @@ use craft\helpers\Component as ComponentHelper;
 use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\web\Request;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\base\ScheduleInterface;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\errors\ScheduleException;
-use panlatent\schedule\errors\ScheduleGroupException;
-use panlatent\schedule\events\ScheduleEvent;
-use panlatent\schedule\events\ScheduleGroupEvent;
-use panlatent\schedule\models\ScheduleCriteria;
-use panlatent\schedule\models\ScheduleGroup;
-use panlatent\schedule\records\Schedule as ScheduleRecord;
-use panlatent\schedule\records\ScheduleGroup as ScheduleGroupRecord;
-use panlatent\schedule\schedules\Console;
-use panlatent\schedule\schedules\Event;
-use panlatent\schedule\schedules\HttpRequest;
-use panlatent\schedule\schedules\MissingSchedule;
-use panlatent\schedule\schedules\Queue;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\errors\ScheduleException;
+use GlueAgency\schedule\errors\ScheduleGroupException;
+use GlueAgency\schedule\events\ScheduleEvent;
+use GlueAgency\schedule\events\ScheduleGroupEvent;
+use GlueAgency\schedule\models\ScheduleCriteria;
+use GlueAgency\schedule\models\ScheduleGroup;
+use GlueAgency\schedule\records\Schedule as ScheduleRecord;
+use GlueAgency\schedule\records\ScheduleGroup as ScheduleGroupRecord;
+use GlueAgency\schedule\schedules\Console;
+use GlueAgency\schedule\schedules\Event;
+use GlueAgency\schedule\schedules\HttpRequest;
+use GlueAgency\schedule\schedules\MissingSchedule;
+use GlueAgency\schedule\schedules\Queue;
 use Throwable;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -40,8 +40,8 @@ use yii\db\Query;
 /**
  * Class Schedules
  *
- * @package panlatent\schedule\services
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\services
+ * @author Glue Agency <info@glue.be>
  */
 class Schedules extends Component
 {

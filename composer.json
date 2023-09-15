@@ -1,5 +1,5 @@
 {
-    "name": "glue-agency/schedule",
+    "name": "glue-agency/craft-schedule",
     "description": "Schedule plugin for CraftCMS",
     "type": "craft-plugin",
     "keywords": [
@@ -11,16 +11,15 @@
         "crontab",
         "job"
     ],
-    "homepage": "https://github.com/panlatent/schedule",
+    "homepage": "https://github.com/glue-agency/craft-schedule",
     "support": {
-        "docs": "https://schedule.panlatent.com",
-        "issues": "https://github.com/panlatent/schedule/issues"
+        "issues": "https://github.com/glue-agency/craft-schedule/issues"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": "panlatent@gmail.com",
-            "homepage": "https://panlatent.com/"
+            "name": "info@glue.be",
+            "homepage": "https://glue.be/"
         }
     ],
     "require": {
@@ -37,17 +36,14 @@
     },
     "autoload": {
         "psr-4": {
-          "panlatent\\schedule\\": "src/"
+          "GlueAgency\\schedule\\": "src/"
         }
     },
     "extra": {
         "name": "Schedule",
         "handle": "schedule",
-        "changelogUrl": "https://raw.githubusercontent.com/panlatent/schedule/master/CHANGELOG.md",
-        "class": "panlatent\\schedule\\Plugin",
-        "branch-alias": {
-            "dev-master": "0.4.x-dev"
-        }
+        "changelogUrl": "https://raw.githubusercontent.com/glue-agency/craft-schedule/master/CHANGELOG.md",
+        "class": "GlueAgency\\schedule\\Plugin"
     },
     "require-dev": {
         "codeception/codeception": "^4.1"

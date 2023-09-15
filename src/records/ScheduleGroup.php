@@ -2,20 +2,20 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\records;
+namespace GlueAgency\schedule\records;
 
 use craft\db\ActiveRecord;
 
 /**
  * Class ScheduleGroup
  *
- * @package panlatent\schedule\records
+ * @package GlueAgency\schedule\records
  * @property int $id
  * @property string $name
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class ScheduleGroup extends ActiveRecord
 {

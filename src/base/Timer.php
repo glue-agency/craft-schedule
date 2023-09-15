@@ -2,23 +2,23 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\base;
+namespace GlueAgency\schedule\base;
 
 use Craft;
 use craft\base\SavableComponent;
-use panlatent\schedule\helpers\CronHelper;
-use panlatent\schedule\Plugin;
+use GlueAgency\schedule\helpers\CronHelper;
+use GlueAgency\schedule\Plugin;
 use yii\base\InvalidConfigException;
 
 /**
  * Class Timer
  *
- * @package panlatent\schedule\base
+ * @package GlueAgency\schedule\base
  * @property ScheduleInterface $schedule
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 abstract class Timer extends SavableComponent implements TimerInterface
 {

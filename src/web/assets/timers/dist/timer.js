@@ -1,25 +1,25 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/schedule
  */
 
 (function($) {
     /** global: Craft */
     /** global: Garnish */
-    var Timer = Garnish.Base.extend(
+    const Timer = Garnish.Base.extend(
         {
             $groups: null,
             $selectedGroup: null,
 
-            init: function() {
+            init() {
                 $('#content .lightswitch').on('change', function() {
-                    var enabled = $(this).data('lightswitch').on;
-                    var data = {
+                    const enabled = $(this).data('lightswitch').on;
+                    const data = {
                         id: $(this).closest('tr').data('id'),
                         enabled: enabled ? '1' : '0'
                     };
-                    Craft.postActionRequest('schedule/timers/toggle-timer', data, function(response, textStatus, jqXHR) {
+                    Craft.postActionRequest('schedule/timers/toggle-timer', data, (response, textStatus, jqXHR) => {
                         if (textStatus === 'success' && response.success) {
                             Craft.cp.displayNotice(enabled ? Craft.t('schedule', 'Timer enabled.') : Craft.t('schedule', 'Timer disabled.'));
                         } else {
@@ -31,7 +31,7 @@
         });
 
 
-    Garnish.$doc.ready(function() {
+    Garnish.$doc.ready(() => {
         new Timer();
     });
 })(jQuery);

@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\validators;
+namespace GlueAgency\schedule\validators;
 
 use Carbon\CarbonInterval;
 use Carbon\Exceptions\InvalidIntervalException;
@@ -15,8 +15,8 @@ use yii\validators\Validator;
 /**
  * Class CarbonStringIntervalValidator
  *
- * @package panlatent\schedule\validators
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\validators
+ * @author Glue Agency <info@glue.be>
  */
 class CarbonStringIntervalValidator extends Validator
 {

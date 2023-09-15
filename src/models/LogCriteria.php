@@ -2,19 +2,19 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\models;
+namespace GlueAgency\schedule\models;
 
-use panlatent\schedule\base\Schedule;
+use GlueAgency\schedule\base\Schedule;
 use yii\base\Model;
 
 /**
  * Class LogCriteria
  *
- * @package panlatent\schedule\models
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\models
+ * @author Glue Agency <info@glue.be>
  */
 class LogCriteria extends Model
 {

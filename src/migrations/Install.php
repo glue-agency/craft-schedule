@@ -2,18 +2,18 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\migrations;
+namespace GlueAgency\schedule\migrations;
 
 use craft\db\Migration;
 
 /**
  * Class Install
  *
- * @package panlatent\schedule\migrations
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\migrations
+ * @author Glue Agency <info@glue.be>
  */
 class Install extends Migration
 {

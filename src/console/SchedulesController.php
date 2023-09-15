@@ -2,26 +2,27 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\console;
+namespace GlueAgency\schedule\console;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Craft;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\Plugin;
+use GlueAgency\schedule\validators\CarbonStringIntervalValidator;
 use omnilight\scheduling\Event;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\Plugin;
-use panlatent\schedule\validators\CarbonStringIntervalValidator;
 use yii\console\Controller;
+use yii\helpers\BaseConsole;
 use yii\helpers\Console;
 
 /**
  * Class ScheduleController
  *
- * @package panlatent\schedule\console
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\console
+ * @author Glue Agency <info@glue.be>
  */
 class SchedulesController extends Controller
 {
@@ -80,20 +81,20 @@ class SchedulesController extends Controller
 
         $i = 0;
         if ($ungroupedSchedules = $schedules->getSchedulesByGroupId()) {
-            $this->stdout(Craft::t('schedule', 'Ungrouped') . ": \n", Console::FG_YELLOW);
+            $this->stdout(Craft::t('schedule', 'Ungrouped') . ": \n", BaseConsole::FG_YELLOW);
             foreach ($ungroupedSchedules as $schedule) {
                 /** @var Schedule $schedule */
-                $this->stdout(Console::renderColoredString("    > #{$i} %c{$schedule->name}\n"));
+                $this->stdout(Console::renderColoredString("    > #$i %c$schedule->name\n"));
                 ++$i;
             }
         }
 
         foreach ($schedules->getAllGroups() as $group) {
-            $this->stdout("{$group->name}: \n", Console::FG_YELLOW);
+            $this->stdout("$group->name: \n", BaseConsole::FG_YELLOW);
             foreach ($group->getSchedules() as $schedule) {
                 // @var Schedule $schedule
 
-                $this->stdout(Console::renderColoredString("    > #{$i} %c{$schedule->name}\n"));
+                $this->stdout(Console::renderColoredString("    > #$i %c$schedule->name\n"));
                 ++$i;
             }
         }
@@ -119,11 +120,11 @@ class SchedulesController extends Controller
 
         foreach ($events as $event) {
             $command = $event->getSummaryForDisplay();
-            $this->stdout("Running scheduled command: {$command}\n");
+            $this->stdout("Running scheduled command: $command\n");
 
             $event->run(Craft::$app);
 
-            Craft::info("Running scheduled command: {$command}", __METHOD__);
+            Craft::info("Running scheduled command: $command", __METHOD__);
         }
 
         Craft::info("Running scheduled event total: " . count($events), __METHOD__);
@@ -159,7 +160,7 @@ class SchedulesController extends Controller
     {
         if($this->all) {
             Plugin::$plugin->getLogs()->deleteAllLogs();
-            $this->stdout("Deleted all logs \n", Console::FG_GREEN);
+            $this->stdout("Deleted all logs \n", BaseConsole::FG_GREEN);
 
             return;
         }
@@ -174,17 +175,17 @@ class SchedulesController extends Controller
                 );
 
                 $interval = CarbonInterval::make($expire);
-                $this->stdout("Deleted all logs older than {$interval->forHumans()} \n", Console::FG_GREEN);
+                $this->stdout("Deleted all logs older than {$interval->forHumans()} \n", BaseConsole::FG_GREEN);
 
                 return;
             }
 
-            $this->stderr($error .  ".\n", Console::FG_RED);
+            $this->stderr($error .  ".\n", BaseConsole::FG_RED);
 
             return;
         }
 
-        $this->stdout("Provide the expire or all option to use this command. \n", Console::FG_YELLOW);
+        $this->stdout("Provide the expire or all option to use this command. \n", BaseConsole::FG_YELLOW);
     }
 
     protected function triggerCronCall(array $events = null): void

@@ -2,20 +2,21 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\controllers;
+namespace GlueAgency\schedule\controllers;
 
 use Craft;
 use craft\helpers\Json;
 use craft\web\Controller;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\base\ScheduleInterface;
-use panlatent\schedule\models\ScheduleGroup;
-use panlatent\schedule\Plugin;
-use panlatent\schedule\schedules\HttpRequest;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\models\ScheduleGroup;
+use GlueAgency\schedule\Plugin;
+use GlueAgency\schedule\schedules\HttpRequest;
 use Throwable;
+use yii\db\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -23,8 +24,8 @@ use yii\web\Response;
 /**
  * Class SchedulesController
  *
- * @package panlatent\schedule\controllers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\controllers
+ * @author Glue Agency <info@glue.be>
  */
 class SchedulesController extends Controller
 {
@@ -43,18 +44,18 @@ class SchedulesController extends Controller
 
         $schedules = Plugin::$plugin->getSchedules();
 
-        $groupId = Craft::$app->getRequest()->getBodyParam('id');
+        $groupId   = Craft::$app->getRequest()->getBodyParam('id');
         $groupName = Craft::$app->getRequest()->getBodyParam('name');
 
         $group = new ScheduleGroup([
-            'id' => $groupId,
+            'id'   => $groupId,
             'name' => $groupName,
         ]);
 
         if (!$schedules->saveGroup($group)) {
             return $this->asJson([
                 'success' => false,
-                'errors' => $group->getErrors(),
+                'errors'  => $group->getErrors(),
             ]);
         }
 
@@ -62,7 +63,7 @@ class SchedulesController extends Controller
 
         return $this->asJson([
             'success' => true,
-            'group' => $group,
+            'group'   => $group,
         ]);
     }
 
@@ -70,6 +71,7 @@ class SchedulesController extends Controller
      * Delete a schedule group.
      *
      * @return Response
+     * @throws Exception
      */
     public function actionDeleteGroup(): Response
     {
@@ -77,7 +79,7 @@ class SchedulesController extends Controller
         $this->requireAcceptsJson();
 
         $schedules = Plugin::$plugin->getSchedules();
-        $groupId = Craft::$app->getRequest()->getBodyParam('id');
+        $groupId   = Craft::$app->getRequest()->getBodyParam('id');
 
         $group = $schedules->getGroupById($groupId);
         if (!$group) {
@@ -85,7 +87,7 @@ class SchedulesController extends Controller
         }
 
         if (!$schedules->deleteGroup($group)) {
-            return $this->asErrorJson(Craft::t('app', 'Couldn’t delete group.', ['name' => $group->name]));
+            return $this->asFailure(Craft::t('app', 'Couldn’t delete group.', ['name' => $group->name]));
         }
 
         return $this->asJson([
@@ -118,7 +120,7 @@ class SchedulesController extends Controller
 
         $isNewSchedule = $schedule->getIsNew();
 
-        $allGroups = $schedules->getAllGroups();
+        $allGroups        = $schedules->getAllGroups();
         $allScheduleTypes = $schedules->getAllScheduleTypes();
 
         $groupOptions = [
@@ -135,23 +137,23 @@ class SchedulesController extends Controller
             ];
         }
 
-        $scheduleInstances = [];
+        $scheduleInstances   = [];
         $scheduleTypeOptions = [];
         foreach ($allScheduleTypes as $class) {
             /** @var ScheduleInterface|string $class */
             $scheduleInstances[$class] = new $class();
-            $scheduleTypeOptions[] = [
+            $scheduleTypeOptions[]     = [
                 'label' => $class::displayName(),
                 'value' => $class,
             ];
         }
 
         return $this->renderTemplate('schedule/_edit', [
-            'isNewSchedule' => $isNewSchedule,
-            'groupOptions' => $groupOptions,
-            'schedule' => $schedule,
-            'scheduleInstances' => $scheduleInstances,
-            'scheduleTypes' => $allScheduleTypes,
+            'isNewSchedule'       => $isNewSchedule,
+            'groupOptions'        => $groupOptions,
+            'schedule'            => $schedule,
+            'scheduleInstances'   => $scheduleInstances,
+            'scheduleTypes'       => $allScheduleTypes,
             'scheduleTypeOptions' => $scheduleTypeOptions,
         ]);
     }
@@ -163,7 +165,7 @@ class SchedulesController extends Controller
     public function actionGetScheduleSettingsHtml(string $scheduleType): Response
     {
         if (!class_exists($scheduleType)) {
-            return $this->asErrorJson("schedule class $scheduleType not found");
+            return $this->asFailure("schedule class $scheduleType not found");
         }
 
         /** @var Schedule $schedule */
@@ -172,14 +174,14 @@ class SchedulesController extends Controller
         $view = Craft::$app->getView();
         $view->startJsBuffer();
         $view->startCssBuffer();
-        $html =$schedule->getSettingsHtml();
-        $js = $view->clearJsBuffer();
-        $css = $view->clearCssBuffer();
+        $html = $schedule->getSettingsHtml();
+        $js   = $view->clearJsBuffer();
+        $css  = $view->clearCssBuffer();
 
         return $this->asJson([
             'html' => $html,
-            'js' => $js,
-            'css' => $css,
+            'js'   => $js,
+            'css'  => $css,
         ]);
     }
 
@@ -223,7 +225,7 @@ class SchedulesController extends Controller
         $this->requireAcceptsJson();
 
         $schedules = Plugin::$plugin->getSchedules();
-        $request = Craft::$app->getRequest();
+        $request   = Craft::$app->getRequest();
 
         $schedule = $schedules->getScheduleById($request->getBodyParam('id'));
         if (!$schedule) {
@@ -267,7 +269,7 @@ class SchedulesController extends Controller
         $schedules = Plugin::$plugin->getSchedules();
 
         $scheduleId = Craft::$app->getRequest()->getBodyParam('id');
-        $schedule = $schedules->getScheduleById($scheduleId);
+        $schedule   = $schedules->getScheduleById($scheduleId);
         if (!$schedule) {
             throw new NotFoundHttpException();
         }

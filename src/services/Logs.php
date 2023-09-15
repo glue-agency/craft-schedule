@@ -2,26 +2,26 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\services;
+namespace GlueAgency\schedule\services;
 
 use Carbon\Carbon;
 use Craft;
 use craft\db\Query;
 use craft\helpers\Db;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\models\LogCriteria;
-use panlatent\schedule\models\ScheduleLog;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\models\LogCriteria;
+use GlueAgency\schedule\models\ScheduleLog;
 use yii\base\Component;
 
 /**
  * Class Logs
  *
- * @package panlatent\schedule\services
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\services
+ * @author Glue Agency <info@glue.be>
  */
 class Logs extends Component
 {

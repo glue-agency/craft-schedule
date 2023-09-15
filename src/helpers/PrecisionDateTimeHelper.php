@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\helpers;
+namespace GlueAgency\schedule\helpers;
 
 use Craft;
 use DateTime;
@@ -14,8 +14,8 @@ use DateTimeZone;
 /**
  * Class DateTimeHelper
  *
- * @package panlatent\schedule\helpers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\helpers
+ * @author Glue Agency <info@glue.be>
  */
 class PrecisionDateTimeHelper
 {
@@ -38,7 +38,7 @@ class PrecisionDateTimeHelper
     public static function toDateTime($value, bool $setToSystemTimeZone = true): DateTime
     {
         $timestamp = substr($value, 0, -3);
-        $datetime = new DateTime("@{$timestamp}");
+        $datetime = new DateTime("@$timestamp");
 
         if ($setToSystemTimeZone) {
             $datetime->setTimezone(new DateTimeZone(Craft::$app->getTimeZone()));
@@ -58,7 +58,7 @@ class PrecisionDateTimeHelper
         $timestamp = substr($value, 0, -3);
         $microsecond = substr($value, -3);
 
-        $datetime = new DateTime("@{$timestamp}");
+        $datetime = new DateTime("@$timestamp");
         if ($setToSystemTimeZone) {
             $datetime->setTimezone(new DateTimeZone(Craft::$app->getTimeZone()));
         }

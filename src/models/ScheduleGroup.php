@@ -2,22 +2,22 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\models;
+namespace GlueAgency\schedule\models;
 
 use Craft;
 use craft\base\Model;
-use panlatent\schedule\base\ScheduleInterface;
-use panlatent\schedule\Plugin;
-use panlatent\schedule\records\ScheduleGroup as ScheduleGroupRecord;
+use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\Plugin;
+use GlueAgency\schedule\records\ScheduleGroup as ScheduleGroupRecord;
 
 /**
  * Class ScheduleGroup
  *
- * @package panlatent\schedule\models
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\models
+ * @author Glue Agency <info@glue.be>
  */
 class ScheduleGroup extends Model
 {

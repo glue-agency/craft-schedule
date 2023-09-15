@@ -2,14 +2,14 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\schedules;
+namespace GlueAgency\schedule\schedules;
 
 use Craft;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\helpers\ClassHelper;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\helpers\ClassHelper;
 use ReflectionClass;
 use yii\base\Component;
 use yii\base\Event as BaseEvent;
@@ -17,8 +17,8 @@ use yii\base\Event as BaseEvent;
 /**
  * Class Event
  *
- * @package panlatent\schedule\schedules
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\schedules
+ * @author Glue Agency <info@glue.be>
  */
 class Event extends Schedule
 {
@@ -83,7 +83,7 @@ class Event extends Schedule
      */
     protected function execute(int $logId = null): bool
     {
-        Craft::info("Event Schedule trigger event: {$this->className}::{$this->eventName}", __METHOD__);
+        Craft::info("Event Schedule trigger event: $this->className::$this->eventName", __METHOD__);
 
         BaseEvent::trigger($this->className, $this->eventName);
 

@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\base;
+namespace GlueAgency\schedule\base;
 
 use Craft;
 use craft\base\SavableComponent;
@@ -14,21 +14,22 @@ use craft\helpers\ArrayHelper;
 use craft\validators\HandleValidator;
 use craft\validators\UniqueValidator;
 use DateTime;
-use panlatent\schedule\Builder;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\events\ScheduleEvent;
-use panlatent\schedule\helpers\PrecisionDateTimeHelper;
-use panlatent\schedule\models\ScheduleGroup;
-use panlatent\schedule\models\ScheduleLog;
-use panlatent\schedule\Plugin;
-use panlatent\schedule\records\Schedule as ScheduleRecord;
+use GlueAgency\schedule\Builder;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\events\ScheduleEvent;
+use GlueAgency\schedule\helpers\PrecisionDateTimeHelper;
+use GlueAgency\schedule\models\ScheduleGroup;
+use GlueAgency\schedule\models\ScheduleLog;
+use GlueAgency\schedule\Plugin;
+use GlueAgency\schedule\records\Schedule as ScheduleRecord;
+use Throwable;
 use yii\db\Query;
 
 
 /**
  * Class Schedule
  *
- * @package panlatent\schedule\base
+ * @package GlueAgency\schedule\base
  * @property ScheduleGroup $group
  * @property TimerInterface[] $timers
  * @property-read ScheduleLog[] $logs
@@ -37,7 +38,7 @@ use yii\db\Query;
  * @property-read string $cronDescription
  * @property-read DateTime $lastFinishedDate
  * @property-read int $lastDuration
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 abstract class Schedule extends SavableComponent implements ScheduleInterface
 {
@@ -139,9 +140,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
      */
     public function datetimeAttributes(): array
     {
-        $attributes = parent::datetimeAttributes();
-
-        return $attributes;
+        return parent::datetimeAttributes();
     }
 
     /**
@@ -211,7 +210,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
      */
     public function getActiveTimers(): array
     {
-        return ArrayHelper::where($this->getTimers(), 'enabled', true);
+        return ArrayHelper::where($this->getTimers(), 'enabled');
     }
 
     /**
@@ -280,7 +279,6 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
                     ->cron($timer->getCronExpression());
             }
 
-            return;
         }
     }
 
@@ -308,7 +306,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
 
         try {
             $successful = $this->execute($id);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $reason = $exception->getMessage();
             Craft::error($reason, __METHOD__);
 
@@ -394,7 +392,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
             ->where([
                 'scheduleId' => $this->id,
             ])
-            ->orderBy(['sortOrder' => SORT_DESC])
+            ->orderBy('sortOrder DESC')
             ->limit(1);
 
         $db->createCommand()

@@ -1,29 +1,29 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
 (function($) {
     /** global: Craft */
     /** global: Garnish */
-    var Schedule = Garnish.Base.extend(
+    const Schedule = Garnish.Base.extend(
         {
             $groups: null,
             $selectedGroup: null,
 
-            init: function() {
+            init() {
                 this.$groups = $('#groups');
                 this.$selectedGroup = this.$groups.find('a.sel:first');
                 this.addListener($('#newgroupbtn'), 'activate', 'addNewGroup');
 
-                var $groupSettingsBtn = $('#groupsettingsbtn');
+                const $groupSettingsBtn = $('#groupsettingsbtn');
 
                 if ($groupSettingsBtn.length) {
-                    var menuBtn = $groupSettingsBtn.data('menubtn');
+                    const menuBtn = $groupSettingsBtn.data('menubtn');
 
                     menuBtn.settings.onOptionSelect = $.proxy(function(elem) {
-                        var action = $(elem).data('action');
+                        const action = $(elem).data('action');
 
                         switch (action) {
                             case 'rename': {
@@ -39,12 +39,12 @@
                 }
 
                 $('#content .lightswitch').on('change', function() {
-                    var enabled = $(this).data('lightswitch').on;
-                    var data = {
+                    const enabled = $(this).data('lightswitch').on;
+                    const data = {
                         id: $(this).closest('tr').data('id'),
                         enabled: enabled ? '1' : '0'
                     };
-                    Craft.postActionRequest('schedule/schedules/toggle-schedule', data, function(response, textStatus, jqXHR) {
+                    Craft.postActionRequest('schedule/schedules/toggle-schedule', data, (response, textStatus, jqXHR) => {
                         if (textStatus === 'success' && response.success) {
                             Craft.cp.displayNotice(enabled ? Craft.t('schedule', 'Schedule enabled.') : Craft.t('schedule', 'Schedule disabled.'));
                         } else {
@@ -54,22 +54,22 @@
                 });
             },
 
-            addNewGroup: function() {
-                var name = this.promptForGroupName('');
+            addNewGroup() {
+                const name = this.promptForGroupName('');
 
                 if (name) {
-                    var data = {
-                        name: name
+                    const data = {
+                        name
                     };
 
                     Craft.postActionRequest('schedule/schedules/save-group', data, $.proxy(function(response, textStatus) {
                         if (textStatus === 'success') {
                             if (response.success) {
-                                location.href = Craft.getUrl('schedule/groups/' + response.group.id);
+                                location.href = Craft.getUrl(`schedule/groups/${  response.group.id}`);
                             }
                             else if (response.errors) {
-                                var errors = this.flattenErrors(response.errors);
-                                alert(Craft.t('app', 'Could not create the group:') + "\n\n" + errors.join("\n"));
+                                const errors = this.flattenErrors(response.errors);
+                                alert(`${Craft.t('app', 'Could not create the group:')  }\n\n${  errors.join("\n")}`);
                             }
                             else {
                                 Craft.cp.displayError();
@@ -80,12 +80,12 @@
                 }
             },
 
-            renameSelectedGroup: function() {
-                var oldName = this.$selectedGroup.text(),
-                    newName = this.promptForGroupName(oldName);
+            renameSelectedGroup() {
+                const oldName = this.$selectedGroup.text();
+                    const newName = this.promptForGroupName(oldName);
 
                 if (newName && newName !== oldName) {
-                    var data = {
+                    const data = {
                         id: this.$selectedGroup.data('id'),
                         name: newName
                     };
@@ -97,8 +97,8 @@
                                 Craft.cp.displayNotice(Craft.t('app', 'Group renamed.'));
                             }
                             else if (response.errors) {
-                                var errors = this.flattenErrors(response.errors);
-                                alert(Craft.t('app', 'Could not rename the group:') + "\n\n" + errors.join("\n"));
+                                const errors = this.flattenErrors(response.errors);
+                                alert(`${Craft.t('app', 'Could not rename the group:')  }\n\n${  errors.join("\n")}`);
                             }
                             else {
                                 Craft.cp.displayError();
@@ -109,17 +109,17 @@
                 }
             },
 
-            promptForGroupName: function(oldName) {
+            promptForGroupName(oldName) {
                 return prompt(Craft.t('app', 'What do you want to name the group?'), oldName);
             },
 
-            deleteSelectedGroup: function() {
+            deleteSelectedGroup() {
                 if (confirm(Craft.t('app', 'Are you sure you want to delete this group?'))) {
-                    var data = {
+                    const data = {
                         id: this.$selectedGroup.data('id')
                     };
 
-                    Craft.postActionRequest('schedule/schedules/delete-group', data, $.proxy(function(response, textStatus) {
+                    Craft.postActionRequest('schedule/schedules/delete-group', data, $.proxy((response, textStatus) => {
                         if (textStatus === 'success') {
                             if (response.success) {
                                 location.href = Craft.getUrl('schedule');
@@ -132,10 +132,10 @@
                 }
             },
 
-            flattenErrors: function(responseErrors) {
-                var errors = [];
+            flattenErrors(responseErrors) {
+                let errors = [];
 
-                for (var attribute in responseErrors) {
+                for (const attribute in responseErrors) {
                     if (!responseErrors.hasOwnProperty(attribute)) {
                         continue;
                     }
@@ -148,7 +148,7 @@
         });
 
 
-    Garnish.$doc.ready(function() {
+    Garnish.$doc.ready(() => {
         new Schedule();
     });
 })(jQuery);

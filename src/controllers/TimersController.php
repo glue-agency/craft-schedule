@@ -2,20 +2,20 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\controllers;
+namespace GlueAgency\schedule\controllers;
 
 use Craft;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\base\Timer;
-use panlatent\schedule\base\TimerInterface;
-use panlatent\schedule\Plugin;
-use panlatent\schedule\timers\Custom;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\base\Timer;
+use GlueAgency\schedule\base\TimerInterface;
+use GlueAgency\schedule\Plugin;
+use GlueAgency\schedule\timers\Custom;
 use Throwable;
 use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
@@ -25,8 +25,8 @@ use yii\web\Response;
 /**
  * Class TimersController
  *
- * @package panlatent\schedule\controllers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\controllers
+ * @author Glue Agency <info@glue.be>
  */
 class TimersController extends Controller
 {
@@ -65,12 +65,6 @@ class TimersController extends Controller
             }
         } else {
             $schedule = $timer->getSchedule();
-        }
-
-        $isNewTimer = $timer->getIsNew();
-
-        if (!$schedule) {
-            throw new NotFoundHttpException();
         }
 
         $allTimerTypes = $timers->getAllTimerTypes();

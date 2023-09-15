@@ -2,25 +2,24 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\schedules;
+namespace GlueAgency\schedule\schedules;
 
 use Craft;
 use craft\helpers\Json;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\models\ScheduleLog;
 use GuzzleHttp\Client;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\models\ScheduleLog;
 use Psr\Http\Message\ResponseInterface;
-use yii\base\Model;
 
 /**
  * Class HttpRequest
  *
- * @package panlatent\schedule\schedules
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\schedules
+ * @author Glue Agency <info@glue.be>
  */
 class HttpRequest extends Schedule
 {
@@ -209,9 +208,9 @@ class HttpRequest extends Schedule
 
         $successful = $statusCode >= 200 && $statusCode < 300;
         if ($successful) {
-            Craft::info("Http Request Schedule: a http request has been sent to {$this->url}({$statusCode}) successfully.", __METHOD__);
+            Craft::info("Http Request Schedule: a http request has been sent to $this->url($statusCode) successfully.", __METHOD__);
         } else {
-            Craft::warning("Http Request Schedule: a http request has been sent to {$this->url}({$statusCode}) failed.", __METHOD__);
+            Craft::warning("Http Request Schedule: a http request has been sent to $this->url($statusCode) failed.", __METHOD__);
         }
 
         if ($logId) {

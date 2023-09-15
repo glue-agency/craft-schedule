@@ -2,25 +2,25 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\schedules;
+namespace GlueAgency\schedule\schedules;
 
 use Closure;
 use Craft;
 use craft\queue\QueueInterface;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\errors\ScheduleException;
-use panlatent\schedule\helpers\ClassHelper;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\errors\ScheduleException;
+use GlueAgency\schedule\helpers\ClassHelper;
 use ReflectionClass;
 use yii\queue\JobInterface;
 
 /**
  * Class JobSchedule
  *
- * @package panlatent\schedule\schedules
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\schedules
+ * @author Glue Agency <info@glue.be>
  */
 class Queue extends Schedule
 {
@@ -95,7 +95,7 @@ class Queue extends Schedule
     {
         $queue = Craft::$app->get($this->componentId, false);
         if ($queue === null) {
-            throw new ScheduleException("No queue component exists with the ID: {$this->componentId}");
+            throw new ScheduleException("No queue component exists with the ID: $this->componentId");
         }
 
         if (!$queue instanceof \yii\queue\Queue && !$queue instanceof QueueInterface) {
@@ -106,7 +106,7 @@ class Queue extends Schedule
         $job = new $this->jobClass();
         $queue->push($job);
 
-        Craft::info("Queue Schedule push a job: {$this->jobClass} to {$this->componentId} component.", __METHOD__);
+        Craft::info("Queue Schedule push a job: $this->jobClass to $this->componentId component.", __METHOD__);
 
         return true;
     }

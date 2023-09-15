@@ -2,31 +2,30 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\web\twig;
+namespace GlueAgency\schedule\web\twig;
 
-use panlatent\schedule\Plugin;
+use GlueAgency\schedule\Plugin;
 use yii\base\Behavior;
 
 /**
  * Class CraftVariableBehavior
  *
- * @package panlatent\craft\dingtalk\web\twig
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class CraftVariableBehavior extends Behavior
 {
     /**
      * @var Plugin
      */
-    public $schedule;
+    public Plugin $schedule;
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

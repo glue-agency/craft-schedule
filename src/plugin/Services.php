@@ -2,26 +2,27 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\plugin;
+namespace GlueAgency\schedule\plugin;
 
+use Craft;
 use craft\errors\DeprecationException;
-use panlatent\schedule\Builder;
-use panlatent\schedule\services\Logs;
-use panlatent\schedule\services\Schedules;
-use panlatent\schedule\services\Timers;
+use GlueAgency\schedule\Builder;
+use GlueAgency\schedule\services\Logs;
+use GlueAgency\schedule\services\Schedules;
+use GlueAgency\schedule\services\Timers;
 use yii\base\InvalidConfigException;
 
 /**
  * Trait Services
  *
- * @package panlatent\schedule\plugin
+ * @package GlueAgency\schedule\plugin
  * @property-read Builder $builder
  * @property-read Schedules $schedules
  * @property-read Logs $logs
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 trait Services
 {
@@ -42,7 +43,7 @@ trait Services
      */
     public function getBuilder(): Builder|null
     {
-        \Craft::$app->getDeprecator()->log('schedule.getBuilder()', 'This method has been deprecated, singleton objects will have bad problems in persistent mode.');
+        Craft::$app->getDeprecator()->log('schedule.getBuilder()', 'This method has been deprecated, singleton objects will have bad problems in persistent mode.');
         return $this->get('builder');
     }
 

@@ -2,20 +2,20 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\base;
+namespace GlueAgency\schedule\base;
 
 use craft\base\SavableComponentInterface;
-use panlatent\schedule\Builder;
-use panlatent\schedule\models\ScheduleLog;
+use GlueAgency\schedule\Builder;
+use GlueAgency\schedule\models\ScheduleLog;
 
 /**
  * Interface ScheduleInterface
  *
- * @package panlatent\schedule\base
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\base
+ * @author Glue Agency <info@glue.be>
  */
 interface ScheduleInterface extends SavableComponentInterface
 {

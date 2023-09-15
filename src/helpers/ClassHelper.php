@@ -2,21 +2,24 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\helpers;
+namespace GlueAgency\schedule\helpers;
 
 use Composer\Autoload\ClassLoader;
 use Composer\Factory;
 use Composer\IO\NullIO;
+use Composer\Json\JsonValidationException;
 use Craft;
+use Throwable;
+use yii\base\Exception;
 
 /**
  * Class ClassHelper
  *
- * @package panlatent\schedule\helpers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\helpers
+ * @author Glue Agency <info@glue.be>
  */
 class ClassHelper
 {
@@ -24,6 +27,8 @@ class ClassHelper
      * Returns known component classes.
      *
      * @return string[]
+     * @throws JsonValidationException
+     * @throws Exception
      */
     public static function findClasses(): array
     {
@@ -31,7 +36,7 @@ class ClassHelper
         // h/t https://stackoverflow.com/a/46435124/1688568
         $autoloadClass = null;
         foreach (get_declared_classes() as $class) {
-            if (strpos($class, 'ComposerAutoloaderInit') === 0) {
+            if (str_starts_with($class, 'ComposerAutoloaderInit')) {
                 $autoloadClass = $class;
                 break;
             }
@@ -67,19 +72,19 @@ class ClassHelper
                         !interface_exists($class, false) &&
                         !trait_exists($class, false) &&
                         file_exists($file) &&
-                        substr($class, -4) !== 'Test' &&
-                        substr($class, -8) !== 'TestCase' &&
-                        substr($class, 0, 11) !== 'craft\test\\' ) {
+                        !str_ends_with($class, 'Test') &&
+                        !str_ends_with($class, 'TestCase') &&
+                        !str_starts_with($class, 'craft\test\\')) {
                         // See if it's in a namespace we care about
                         foreach ($namespaces as $namespace) {
-                            if (strpos($class, $namespace . '\\') === 0) {
+                            if (str_starts_with($class, $namespace . '\\')) {
                                 require $file;
                                 break;
                             }
                         }
                     }
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
             }
 
         }
@@ -98,7 +103,7 @@ class ClassHelper
     {
         foreach (preg_split("/\r\n|\n|\r/", $doc) as $line) {
             $line = preg_replace('#^[/*\s]*(?:@event\s+[^\s]+\s+)?#', '', $line);
-            if (strpos($line, '@') === 0) {
+            if (str_starts_with($line, '@')) {
                 return null;
             }
             if ($line) {

@@ -2,13 +2,13 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\migrations;
+namespace GlueAgency\schedule\migrations;
 
 use craft\db\Migration;
-use craft\helpers\MigrationHelper;
+use craft\helpers\Db;
 
 /**
  * m191010_060704_fix_shedules_handle_unqidx migration.
@@ -18,9 +18,9 @@ class m191010_060704_fix_shedules_handle_unqidx extends Migration
     /**
      * @inheritdoc
      */
-    public function safeUp()
+    public function safeUp(): void
     {
-        MigrationHelper::dropIndexIfExists('{{%schedules}}', ['groupId', 'handle'], true, $this);
+        Db::dropIndexIfExists('{{%schedules}}', ['groupId', 'handle'], true, $this->db);
         $this->createIndex(null, '{{%schedules}}', 'handle', true);
     }
 

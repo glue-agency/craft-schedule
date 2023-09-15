@@ -2,21 +2,21 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\base;
+namespace GlueAgency\schedule\base;
 
 /**
  * Interface TimerInterface
  *
- * @package panlatent\schedule\base
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\base
+ * @author Glue Agency <info@glue.be>
  */
 interface TimerInterface
 {
     /**
-     * @see \panlatent\schedule\services\Timers::getAllTimers()
+     * @see \GlueAgency\schedule\services\Timers::getAllTimers()
      *
      * @return bool whether to run the timer.
      */

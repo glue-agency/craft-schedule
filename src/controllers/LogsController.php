@@ -2,21 +2,21 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\controllers;
+namespace GlueAgency\schedule\controllers;
 
 use Craft;
 use craft\web\Controller;
-use panlatent\schedule\Plugin;
+use GlueAgency\schedule\Plugin;
 use yii\web\Response;
 
 /**
  * Class LogsController
  *
- * @package panlatent\schedule\controllers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\controllers
+ * @author Glue Agency <info@glue.be>
  */
 class LogsController extends Controller
 {

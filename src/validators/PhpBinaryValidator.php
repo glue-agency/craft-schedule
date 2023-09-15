@@ -2,20 +2,21 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\validators;
+namespace GlueAgency\schedule\validators;
 
 use Craft;
+use craft\helpers\App;
 use Symfony\Component\Process\Process;
 use yii\validators\Validator;
 
 /**
  * Class PhpBinaryValidator
  *
- * @package panlatent\schedule\validators
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\validators
+ * @author Glue Agency <info@glue.be>
  */
 class PhpBinaryValidator extends Validator
 {
@@ -46,7 +47,7 @@ class PhpBinaryValidator extends Validator
     public function validateValue($value)
     {
         if ($this->allowParseEnv) {
-            $value = Craft::parseEnv($value);
+            $value = App::parseEnv($value);
         }
 
         $process = new Process([$value, '-v']);

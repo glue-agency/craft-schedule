@@ -2,16 +2,16 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\db;
+namespace GlueAgency\schedule\db;
 
 /**
  * Class Table
  *
- * @package panlatent\schedule\db
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\db
+ * @author Glue Agency <info@glue.be>
  */
 abstract class Table
 {

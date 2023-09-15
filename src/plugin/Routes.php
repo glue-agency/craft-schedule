@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\plugin;
+namespace GlueAgency\schedule\plugin;
 
 use craft\events\RegisterUrlRulesEvent;
 use craft\web\UrlManager;
@@ -14,8 +14,8 @@ use yii\base\Event;
 /**
  * Trait Routes
  *
- * @package panlatent\schedule\plugin
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\plugin
+ * @author Glue Agency <info@glue.be>
  */
 trait Routes
 {

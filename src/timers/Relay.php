@@ -2,22 +2,22 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\timers;
+namespace GlueAgency\schedule\timers;
 
 use Craft;
 use DateInterval;
 use DateTime;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\base\Timer;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\base\Timer;
 
 /**
  * Class Relay
  *
- * @package panlatent\schedule\timers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\timers
+ * @author Glue Agency <info@glue.be>
  */
 class Relay extends Timer
 {

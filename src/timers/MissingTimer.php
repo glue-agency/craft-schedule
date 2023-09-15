@@ -2,19 +2,19 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\timers;
+namespace GlueAgency\schedule\timers;
 
 use craft\base\MissingComponentTrait;
-use panlatent\schedule\base\Timer;
+use GlueAgency\schedule\base\Timer;
 
 /**
  * Class MissingTimer
  *
- * @package panlatent\schedule\timers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\timers
+ * @author Glue Agency <info@glue.be>
  */
 class MissingTimer extends Timer
 {

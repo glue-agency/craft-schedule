@@ -2,7 +2,7 @@
 
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle('panlatent\\schedule\\web\\assets\\timers\\TimersAsset') %}
+{% do view.registerAssetBundle('GlueAgency\\schedule\\web\\assets\\timers\\TimersAsset') %}
 
 {% set schedule = schedule is defined ? schedule : craft.schedule.schedules.getScheduleById(scheduleId) %}
 {% set timers = timers is defined ? timers : schedule.timers %}

@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\web\assets\timers;
+namespace GlueAgency\schedule\web\assets\timers;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
@@ -15,8 +15,8 @@ use craft\web\View;
 /**
  * Class ScheduleAsset
  *
- * @package panlatent\schedule\assets
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\assets
+ * @author Glue Agency <info@glue.be>
  */
 class TimersAsset extends AssetBundle
 {

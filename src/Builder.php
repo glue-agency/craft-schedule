@@ -2,22 +2,23 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule;
+namespace GlueAgency\schedule;
 
+use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\events\ScheduleBuildEvent;
 use omnilight\scheduling\Event;
 use omnilight\scheduling\Schedule;
-use panlatent\schedule\base\ScheduleInterface;
-use panlatent\schedule\events\ScheduleBuildEvent;
+use yii\base\InvalidConfigException;
 
 /**
  * Class Builder
  *
- * @package panlatent\schedule
+ * @package GlueAgency\schedule
  * @method  Event call(callable $callback, array $parameters = [])
- * @author Panlatent <panlatent@gmail.com>
+ * @author Glue Agency <info@glue.be>
  */
 class Builder extends Schedule
 {
@@ -49,6 +50,8 @@ class Builder extends Schedule
 
     /**
      * Build schedules.
+     * @throws InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function build(bool $force = false)
     {

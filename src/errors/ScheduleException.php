@@ -2,18 +2,18 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\errors;
+namespace GlueAgency\schedule\errors;
 
 use yii\base\Exception;
 
 /**
  * Class ScheduleException
  *
- * @package panlatent\schedule\events
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\events
+ * @author Glue Agency <info@glue.be>
  */
 class ScheduleException extends Exception
 {

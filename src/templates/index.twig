@@ -1,6 +1,6 @@
 {% extends "_layouts/cp" %}
 
-{% do view.registerAssetBundle('panlatent\\schedule\\web\\assets\\schedules\\SchedulesAsset') %}
+{% do view.registerAssetBundle('GlueAgency\\schedule\\web\\assets\\schedules\\SchedulesAsset') %}
 {% set title = "Schedules"|t("schedule") %}
 {% set selectedSubnavItem = "schedules" %}
 {% set groups = craft.schedule.schedules.getAllGroups() %}
@@ -49,7 +49,6 @@
 {% block content %}
     {% if schedules|length %}
         {% set sortable  = (schedules|length > 1 and groupId) %}
-
         <table id="schedules" class="data fullwidth collapsible">
             <thead>
             <th scope="col">{{ "Name"|t('app') }}</th>

@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\services;
+namespace GlueAgency\schedule\services;
 
 use Craft;
 use craft\errors\MissingComponentException;
@@ -13,17 +13,17 @@ use craft\events\RegisterComponentTypesEvent;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Component as ComponentHelper;
 use craft\helpers\Json;
-use panlatent\schedule\base\Timer;
-use panlatent\schedule\base\TimerInterface;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\errors\TimerException;
-use panlatent\schedule\events\TimerEvent;
-use panlatent\schedule\records\Timer as TimerRecord;
-use panlatent\schedule\timers\Custom;
-use panlatent\schedule\timers\DateTime;
-use panlatent\schedule\timers\Every;
-use panlatent\schedule\timers\MissingTimer;
-use panlatent\schedule\timers\Relay;
+use GlueAgency\schedule\base\Timer;
+use GlueAgency\schedule\base\TimerInterface;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\errors\TimerException;
+use GlueAgency\schedule\events\TimerEvent;
+use GlueAgency\schedule\records\Timer as TimerRecord;
+use GlueAgency\schedule\timers\Custom;
+use GlueAgency\schedule\timers\DateTime;
+use GlueAgency\schedule\timers\Every;
+use GlueAgency\schedule\timers\MissingTimer;
+use GlueAgency\schedule\timers\Relay;
 use Throwable;
 use yii\base\Component;
 use yii\db\Query;
@@ -31,8 +31,8 @@ use yii\db\Query;
 /**
  * Class Timers
  *
- * @package panlatent\schedule\services
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\services
+ * @author Glue Agency <info@glue.be>
  */
 class Timers extends Component
 {
@@ -383,7 +383,7 @@ class Timers extends Component
                 'sortOrder'
             ])
             ->from(Table::SCHEDULETIMERS)
-            ->orderBy(['sortOrder' => SORT_ASC]);
+            ->orderBy('sortOrder DESC');
     }
 
     /**

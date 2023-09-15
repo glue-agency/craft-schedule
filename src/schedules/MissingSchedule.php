@@ -2,22 +2,22 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\schedules;
+namespace GlueAgency\schedule\schedules;
 
 use Craft;
 use craft\base\MissingComponentTrait;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\Builder;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\Builder;
 use yii\base\NotSupportedException;
 
 /**
  * Class MissingSchedule
  *
- * @package panlatent\schedule\schedules
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\schedules
+ * @author Glue Agency <info@glue.be>
  */
 class MissingSchedule extends Schedule
 {
@@ -26,7 +26,7 @@ class MissingSchedule extends Schedule
     /**
      * @inheritdoc
      */
-    public function build(Builder $builder)
+    public function build(Builder $builder): void
     {
         Craft::warning('Missing build a schedule', __METHOD__);
     }

@@ -1,11 +1,13 @@
-<?php namespace panlatent\schedule\tests\helpers;
+<?php namespace GlueAgency\schedule\tests\helpers;
 
-use panlatent\schedule\helpers\CronHelper;
+use Codeception\Test\Unit;
+use GlueAgency\schedule\helpers\CronHelper;
+use GlueAgency\schedule\tests\UnitTester;
 
-class CronHelperTest extends \Codeception\Test\Unit
+class CronHelperTest extends Unit
 {
     /**
-     * @var \panlatent\schedule\tests\UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -31,10 +33,10 @@ class CronHelperTest extends \Codeception\Test\Unit
         $this->assertEquals('15 * * */2 * *', CronHelper::toCronExpression([15, 'month' => '*/2']));
     }
 
-    public function testToDescription()
+    public function testToDescription(): void
     {
-        require dirname(dirname(dirname(__DIR__))) . '/vendor/yiisoft/yii2/Yii.php';
-        require dirname(dirname(dirname(__DIR__))) . '/vendor/craftcms/cms/src/Craft.php';
+        require dirname(__DIR__, 3) . '/vendor/yiisoft/yii2/Yii.php';
+        require dirname(__DIR__, 3) . '/vendor/craftcms/cms/src/Craft.php';
 
         $this->assertEquals('At1MinutesPastTheHour', CronHelper::toDescription('1 * * * *'));
         $this->assertEquals('EveryMinute', CronHelper::toDescription('* * * * *'));

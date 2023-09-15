@@ -2,10 +2,10 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\helpers;
+namespace GlueAgency\schedule\helpers;
 
 use Craft;
 use Panlatent\CronExpressionDescriptor\ExpressionDescriptor;
@@ -13,8 +13,8 @@ use Panlatent\CronExpressionDescriptor\ExpressionDescriptor;
 /**
  * Class CronHelper
  *
- * @package panlatent\schedule\helpers
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\helpers
+ * @author Glue Agency <info@glue.be>
  */
 class CronHelper
 {

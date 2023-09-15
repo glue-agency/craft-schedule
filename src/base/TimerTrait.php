@@ -2,16 +2,16 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\base;
+namespace GlueAgency\schedule\base;
 
 /**
  * Trait TimerTrait
  *
- * @package panlatent\schedule\base
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\base
+ * @author Glue Agency <info@glue.be>
  */
 trait TimerTrait
 {

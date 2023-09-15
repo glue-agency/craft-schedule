@@ -2,21 +2,21 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\models;
+namespace GlueAgency\schedule\models;
 
-use Craft;
 use craft\base\Model;
-use panlatent\schedule\validators\CarbonStringIntervalValidator;
-use panlatent\schedule\validators\PhpBinaryValidator;
+use craft\helpers\App;
+use GlueAgency\schedule\validators\CarbonStringIntervalValidator;
+use GlueAgency\schedule\validators\PhpBinaryValidator;
 
 /**
  * Class Settings
  *
- * @package panlatent\schedule\models
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\models
+ * @author Glue Agency <info@glue.be>
  */
 class Settings extends Model
 {
@@ -70,6 +70,6 @@ class Settings extends Model
      */
     public function getCliPath(): string
     {
-        return Craft::parseEnv($this->cliPath) ?: 'php';
+        return App::parseEnv($this->cliPath) ?: 'php';
     }
 }

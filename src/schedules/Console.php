@@ -2,24 +2,24 @@
 /*
  * Schedule plugin for CraftCMS
  *
- * https://github.com/panlatent/schedule
+ * https://github.com/glue-agency/craft-schedule
  */
 
-namespace panlatent\schedule\schedules;
+namespace GlueAgency\schedule\schedules;
 
 use Craft;
-use panlatent\schedule\base\Schedule;
-use panlatent\schedule\db\Table;
-use panlatent\schedule\models\ScheduleLog;
-use panlatent\schedule\Plugin;
+use GlueAgency\schedule\base\Schedule;
+use GlueAgency\schedule\db\Table;
+use GlueAgency\schedule\models\ScheduleLog;
+use GlueAgency\schedule\Plugin;
 use Symfony\Component\Process\Process;
 use yii\db\Expression;
 
 /**
  * Class CommandSchedule
  *
- * @package panlatent\schedule\schedules
- * @author Panlatent <panlatent@gmail.com>
+ * @package GlueAgency\schedule\schedules
+ * @author Glue Agency <info@glue.be>
  */
 class Console extends Schedule
 {
@@ -53,7 +53,7 @@ class Console extends Schedule
     /**
      * @var string|null
      */
-    public ?string $command;
+    public $command;
 
     /**
      * @var string|null
@@ -99,7 +99,7 @@ class Console extends Schedule
         $process->run();
 
         if ($process->isSuccessful()) {
-            $lines = (array)explode("\n", mb_convert_encoding($process->getOutput(), mb_internal_encoding()));
+            $lines = explode("\n", mb_convert_encoding($process->getOutput(), mb_internal_encoding()));
 
             $data = [];
             foreach ($lines as $index => $line) {
@@ -152,11 +152,7 @@ class Console extends Schedule
 
         $process->run(function ($type, $buffer) use ($logId) {
 
-            if (Process::ERR === $type) {
-                $output = $buffer . "\n";
-            } else {
-                $output = $buffer . "\n";;
-            }
+            $output = $buffer . "\n";
 
             Craft::$app->getDb()->createCommand()
                 ->update(Table::SCHEDULELOGS, [

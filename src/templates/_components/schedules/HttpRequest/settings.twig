@@ -27,7 +27,10 @@
     label: "Headers"|t("schedule"),
     id: "headers",
     name: "headers",
-    addRowLabel: "Add a header"|t("schedule"),
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+    required: false,
     cols: {
         enabled: {
             type: 'checkbox',
@@ -58,7 +61,10 @@
     label: "URL Params"|t("schedule"),
     id: "urlParams",
     name: "urlParams",
-    addRowLabel: "Add a parameter"|t("schedule"),
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+    required: false,
     cols: {
         enabled: {
             type: 'checkbox',
@@ -123,12 +129,12 @@
 {% endnamespace %}
 
 {% js %}
-    $('#types-panlatent-schedule-schedules-HttpRequest-method').change(function() {
+    $('#types-GlueAgency-schedule-schedules-HttpRequest-method').change(function() {
         var method = $(this).val();
         if (method === 'get' || method === 'head') {
-            $('#types-panlatent-schedule-schedules-HttpRequest-requestContent').addClass('hidden');
+            $('#types-GlueAgency-schedule-schedules-HttpRequest-requestContent').addClass('hidden');
         } else {
-            $('#types-panlatent-schedule-schedules-HttpRequest-requestContent').removeClass('hidden');
+            $('#types-GlueAgency-schedule-schedules-HttpRequest-requestContent').removeClass('hidden');
         }
     });
 {% endjs %}
