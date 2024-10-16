@@ -70,12 +70,12 @@ class Timers extends Component
     /**
      * @var bool
      */
-    private bool $_fetchedAllTimers = false;
+    private $_fetchedAllTimers = false;
 
     /**
      * @var TimerInterface[]|null
      */
-    private ?array $_timersById;
+    private $_timersById;
 
     // Public Methods
     // =========================================================================
@@ -138,10 +138,10 @@ class Timers extends Component
      * @param int $scheduleId
      * @return TimerInterface[]
      */
-    public function getTimersByScheduleId(int $scheduleId): array
+    public function getTimersByScheduleId(int $scheduleId)
     {
         if ($this->_fetchedAllTimers) {
-            return ArrayHelper::where($this->getAllTimers(), 'scheduleId', $scheduleId);
+            return ArrayHelper::filterByValue($this->getAllTimers(), 'scheduleId', $scheduleId);
         }
 
         $ret = [];
@@ -163,7 +163,7 @@ class Timers extends Component
      * @param int $id
      * @return TimerInterface|null
      */
-    public function getTimerById(int $id): ?TimerInterface
+    public function getTimerById(int $id)
     {
         if ($this->_timersById && array_key_exists($id, $this->_timersById)) {
             return $this->_timersById[$id];
