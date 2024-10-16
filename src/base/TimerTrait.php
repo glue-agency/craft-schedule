@@ -21,40 +21,40 @@ trait TimerTrait
     /**
      * @var int|null
      */
-    public ?int $scheduleId;
+    public $scheduleId;
 
     /**
      * @var string|null
      */
-    public ?string $minute;
+    public $minute;
 
     /**
      * @var string|null
      */
-    public ?string $hour;
+    public $hour;
 
     /**
      * @var string|null
      */
-    public ?string $day;
+    public $day;
 
     /**
      * @var string|null
      */
-    public ?string $month;
+    public $month;
 
     /**
      * @var string|null
      */
-    public ?string $week;
+    public $week;
 
     /**
      * @var bool|null
      */
-    public ?bool $enabled = true;
+    public $enabled = true;
 
     /**
      * @var int|null
      */
-    public ?int $sortOrder;
+    public $sortOrder;
 }
