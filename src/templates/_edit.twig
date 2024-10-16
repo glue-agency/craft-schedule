@@ -43,15 +43,6 @@
             errors: schedule.getErrors('name'),
         }) }}
 
-        {{ forms.textField({
-            label: 'Handle'|t('app'),
-            required: true,
-            id: 'handle',
-            name: 'handle',
-            value: schedule.handle,
-            errors: schedule.getErrors('handle'),
-        }) }}
-
         {{ forms.checkboxField({
             label: 'Enabled Log'|t('schedule'),
             id: 'enabledLog',

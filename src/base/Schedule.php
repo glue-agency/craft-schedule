@@ -11,8 +11,6 @@ use Craft;
 use craft\base\SavableComponent;
 use craft\db\mysql\Schema as MysqlSchema;
 use craft\helpers\ArrayHelper;
-use craft\validators\HandleValidator;
-use craft\validators\UniqueValidator;
 use DateTime;
 use GlueAgency\schedule\Builder;
 use GlueAgency\schedule\db\Table;
@@ -21,8 +19,8 @@ use GlueAgency\schedule\helpers\PrecisionDateTimeHelper;
 use GlueAgency\schedule\models\ScheduleGroup;
 use GlueAgency\schedule\models\ScheduleLog;
 use GlueAgency\schedule\Plugin;
-use GlueAgency\schedule\records\Schedule as ScheduleRecord;
 use Throwable;
+use yii\base\InvalidConfigException;
 use yii\db\Query;
 
 
@@ -114,11 +112,9 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     public function rules(): array
     {
         return [
-            [['name', 'handle'], 'required'],
+            [['name'], 'required'],
             [['id', 'groupId', 'lastStartedTime', 'lastFinishedTime'], 'integer'],
-            [['name', 'handle', 'description', 'user'], 'string'],
-            [['handle'], UniqueValidator::class, 'targetClass' => ScheduleRecord::class, 'targetAttribute' => 'handle'],
-            [['handle'], HandleValidator::class],
+            [['name', 'description', 'user'], 'string'],
             [['enabledLog', 'lastStatus'], 'boolean'],
         ];
     }
@@ -138,19 +134,10 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
     /**
      * @inheritdoc
      */
-    public function datetimeAttributes(): array
-    {
-        return parent::datetimeAttributes();
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels(): array
     {
         return [
             'name' => Craft::t('app', 'Name'),
-            'handle' => Craft::t('app', 'Handle'),
             'groupId' => Craft::t('app', 'Group'),
         ];
     }
@@ -165,6 +152,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
 
     /**
      * @return ScheduleGroup|null
+     * @throws InvalidConfigException
      */
     public function getGroup(): ?ScheduleGroup
     {
@@ -181,6 +169,7 @@ abstract class Schedule extends SavableComponent implements ScheduleInterface
 
     /**
      * @return TimerInterface[]
+     * @throws InvalidConfigException
      */
     public function getTimers(): array
     {

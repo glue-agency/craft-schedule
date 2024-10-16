@@ -10,7 +10,9 @@ namespace GlueAgency\schedule\timers;
 use Craft;
 use craft\helpers\DateTimeHelper;
 use DateTimeZone;
+use Exception;
 use GlueAgency\schedule\base\Timer;
+use yii\base\InvalidConfigException;
 
 /**
  * Class DateTime
@@ -37,12 +39,12 @@ class DateTime extends Timer
     /**
      * @var int|null
      */
-    public $year;
+    public ?int $year;
 
     /**
      * @var string|null
      */
-    public $timezone;
+    public ?string $timezone;
 
     // Public Methods
     // =========================================================================
@@ -66,7 +68,7 @@ class DateTime extends Timer
     /**
      * @inheritdoc
      */
-    public function attributes()
+    public function attributes(): array
     {
         $attributes = parent::attributes();
         $attributes[] = 'datetime';
@@ -84,8 +86,9 @@ class DateTime extends Timer
 
     /**
      * @return \DateTime|null
+     * @throws Exception
      */
-    public function getDatetime()
+    public function getDatetime(): ?\DateTime
     {
         if (empty($this->year) || empty($this->timezone)) {
             return null;
@@ -97,8 +100,9 @@ class DateTime extends Timer
 
     /**
      * @param mixed $datetime
+     * @throws Exception
      */
-    public function setDateTime($datetime)
+    public function setDateTime(mixed $datetime): void
     {
         $datetime = DateTimeHelper::toDateTime($datetime);
         $this->timezone = $datetime->getTimezone()->getName();
@@ -111,6 +115,8 @@ class DateTime extends Timer
 
     /**
      * @return string
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function getCronDescription(): string
     {

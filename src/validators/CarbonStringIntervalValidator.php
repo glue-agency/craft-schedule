@@ -10,6 +10,7 @@ namespace GlueAgency\schedule\validators;
 use Carbon\CarbonInterval;
 use Carbon\Exceptions\InvalidIntervalException;
 use yii\validators\Validator;
+use function Tinify\validate;
 
 
 /**

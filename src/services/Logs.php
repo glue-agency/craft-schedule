@@ -184,7 +184,6 @@ class Logs extends Component
                 $query->andWhere(Db::parseParam('logs.scheduleId', $criteria->schedule->id));
             } else {
                 $query->leftJoin(Table::SCHEDULES . ' schedules', '[[schedules.id]] = [[logs.scheduleId]]');
-                $query->andWhere(Db::parseParam('schedules.handle', $criteria->schedule));
             }
         }
     }

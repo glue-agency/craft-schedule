@@ -8,14 +8,19 @@
 namespace GlueAgency\schedule\controllers;
 
 use Craft;
+use craft\errors\MissingComponentException;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use craft\web\Controller;
 use GlueAgency\schedule\base\Schedule;
 use GlueAgency\schedule\base\ScheduleInterface;
+use GlueAgency\schedule\errors\ScheduleException;
 use GlueAgency\schedule\models\ScheduleGroup;
 use GlueAgency\schedule\Plugin;
 use GlueAgency\schedule\schedules\HttpRequest;
+use GlueAgency\schedule\timers\DateTime;
 use Throwable;
+use yii\base\InvalidConfigException;
 use yii\db\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -189,6 +194,7 @@ class SchedulesController extends Controller
      * Save a schedule.
      *
      * @return Response|null
+     * @throws InvalidConfigException
      */
     public function actionSaveSchedule(): ?Response
     {
@@ -215,6 +221,63 @@ class SchedulesController extends Controller
     }
 
     /**
+     * @throws Throwable
+     * @throws MissingComponentException
+     * @throws InvalidConfigException
+     * @throws ScheduleException
+     * @throws BadRequestHttpException
+     */
+    public function actionDuplicateSchedule(): ?Response
+    {
+        $request = Craft::$app->getRequest();
+
+        $scheduleId = $request->getParam('schedule_id');
+
+        $schedules = Plugin::$plugin->getSchedules();
+
+        /** @var Schedule $schedule */
+        $schedule = $schedules->getScheduleById($scheduleId);
+        $oldSchedule = $schedule;
+        $scheduleTimers = $oldSchedule->getTimers();
+
+        $schedule->id = null;
+        $schedule->name = $schedule->name . ' - CLONE';
+
+        if (!$schedules->saveSchedule($schedule)) {
+            Craft::$app->getSession()->setError(Craft::t('schedule', 'Couldn’t save schedule.'));
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'schedule' => $schedule,
+            ]);
+
+            return null;
+        }
+
+        $timers = Plugin::$plugin->getTimers();
+        foreach ($scheduleTimers as $timer) {
+            $timer->id = null;
+            $timer->scheduleId = $schedule->id;
+            if ($timer instanceof DateTime) {
+                $datetime = DateTimeHelper::toDateTime(date("Y-m-d H:i:s", strtotime("+1 hours")));
+                $timer->timezone = $datetime->getTimezone()->getName();
+                $timer->year = $datetime->format('Y');
+                $timer->month = $datetime->format('m');
+                $timer->day = $datetime->format('d');
+                $timer->hour = $datetime->format('H');
+                $timer->minute = $datetime->format('m');
+            }
+            if (!$timers->saveTimer($timer)) {
+                dd($timer, $timer->getErrors());
+            }
+
+        }
+
+        Craft::$app->getSession()->setNotice(Craft::t('schedule', 'Schedule duplicated.'));
+
+        return $this->redirect('schedule' . ($schedule->groupId ? '/groups/' . $schedule->groupId : '/groups/ungrouped'));
+    }
+
+    /**
      * @return Response
      * @throws BadRequestHttpException
      * @throws Throwable
@@ -235,7 +298,6 @@ class SchedulesController extends Controller
         $schedule->enabled = (bool)$request->getBodyParam('enabled');
 
         if (!$schedules->saveSchedule($schedule)) {
-            var_dump($schedule->getErrors());
             return $this->asJson(['success' => false]);
         }
 
@@ -244,6 +306,39 @@ class SchedulesController extends Controller
 
     /**
      * @return Response
+     * @throws BadRequestHttpException
+     * @throws Throwable
+     */
+    public function actionToggleMultipleSchedules(): Response
+    {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $schedules = Plugin::$plugin->getSchedules();
+        $request   = Craft::$app->getRequest();
+
+        $scheduleIds = Craft::$app->getRequest()->getRequiredBodyParam('ids');
+        if (empty(array_filter($scheduleIds))) {
+            return $this->asJson(['success' => false]);
+        }
+
+        foreach ($scheduleIds as $scheduleId) {
+            $schedule = $schedules->getScheduleById($scheduleId);
+            /** @var Schedule $schedule */
+            $schedule->enabled = (bool)$request->getBodyParam('enabled');
+            if (!$schedules->saveSchedule($schedule)) {
+                return $this->asJson(['success' => false]);
+            }
+        }
+        $message = (bool)$request->getBodyParam('enabled') ? Craft::t('schedule', 'Schedules enabled.') : Craft::t('schedule', 'Schedules disabled.');
+        Craft::$app->getSession()->setNotice($message);
+        return $this->asJson(['success' => true]);
+    }
+
+    /**
+     * @return Response
+     * @throws BadRequestHttpException
+     * @throws Throwable
      */
     public function actionReorderSchedules(): Response
     {
@@ -260,6 +355,9 @@ class SchedulesController extends Controller
      * Delete a schedule.
      *
      * @return Response
+     * @throws InvalidConfigException
+     * @throws BadRequestHttpException
+     * @throws Throwable
      */
     public function actionDeleteSchedule(): Response
     {

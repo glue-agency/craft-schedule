@@ -8,12 +8,14 @@
 namespace GlueAgency\schedule\controllers;
 
 use Craft;
+use craft\errors\MissingComponentException;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
 use GlueAgency\schedule\base\Schedule;
 use GlueAgency\schedule\base\Timer;
 use GlueAgency\schedule\base\TimerInterface;
+use GlueAgency\schedule\errors\TimerException;
 use GlueAgency\schedule\Plugin;
 use GlueAgency\schedule\timers\Custom;
 use Throwable;
@@ -108,8 +110,13 @@ class TimersController extends Controller
      * Save a timer.
      *
      * @return Response|null
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws TimerException
+     * @throws MissingComponentException
      */
-    public function actionSaveTimer()
+    public function actionSaveTimer(): ?Response
     {
         $this->requirePostRequest();
 
@@ -150,6 +157,10 @@ class TimersController extends Controller
      * Delete a timer.
      *
      * @return Response
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     * @throws NotFoundHttpException
+     * @throws Throwable
      */
     public function actionDeleteTimer(): Response
     {
@@ -207,6 +218,9 @@ class TimersController extends Controller
      * Reorder all schedule timers.
      *
      * @return Response
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     * @throws Throwable
      */
     public function actionReorderTimers(): Response
     {

@@ -14,6 +14,7 @@ use GlueAgency\schedule\base\Schedule;
 use GlueAgency\schedule\Plugin;
 use GlueAgency\schedule\validators\CarbonStringIntervalValidator;
 use omnilight\scheduling\Event;
+use yii\base\InvalidConfigException;
 use yii\console\Controller;
 use yii\helpers\BaseConsole;
 use yii\helpers\Console;
@@ -104,6 +105,7 @@ class SchedulesController extends Controller
      * Run all schedules.
      *
      * @param Event[]|null $events
+     * @throws InvalidConfigException
      */
     public function actionRun(array $events = null): void
     {
@@ -158,18 +160,18 @@ class SchedulesController extends Controller
      */
     public function actionClearLogs(): void
     {
-        if($this->all) {
+        if ($this->all) {
             Plugin::$plugin->getLogs()->deleteAllLogs();
             $this->stdout("Deleted all logs \n", BaseConsole::FG_GREEN);
 
             return;
         }
 
-        if(Plugin::getInstance()->getSettings()->logExpireAfter || $this->expire) {
-            $expire = $this->expire ?: Plugin::getInstance()->getSettings()->logExpireAfter;
+        if (Plugin::getInstance()->getSettings()->logExpireAfter || $this->expire) {
+            $expire    = $this->expire ?: Plugin::getInstance()->getSettings()->logExpireAfter;
             $validator = new CarbonStringIntervalValidator;
 
-            if($validator->validate($expire, $error)) {
+            if ($validator->validate($expire, $error)) {
                 Plugin::$plugin->getLogs()->deleteLogsByDateCreated(
                     Carbon::now()->subtract($expire)
                 );
@@ -180,7 +182,7 @@ class SchedulesController extends Controller
                 return;
             }
 
-            $this->stderr($error .  ".\n", BaseConsole::FG_RED);
+            $this->stderr($error . ".\n", BaseConsole::FG_RED);
 
             return;
         }

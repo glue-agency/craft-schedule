@@ -49,84 +49,120 @@
 {% block content %}
     {% if schedules|length %}
         {% set sortable  = (schedules|length > 1 and groupId) %}
-        <table id="schedules" class="data fullwidth collapsible">
-            <thead>
-            <th scope="col">{{ "Name"|t('app') }}</th>
-            {% if not groupId %}
-                <th scope="col">{{ "Group"|t('app') }}</th>
-            {% endif %}
-            <th scope="col">{{ "Type"|t('app') }}</th>
-            <th scope="col">{{ "Timers"|t('schedule') }}</th>
-            <th scope="col">{{ "Last Running Date"|t('schedule') }}</th>
-            <th scope="col">{{ 'Enabled'|t('schedule') }}</th>
-            <th scope="col">{{ "Logs"|t('schedule') }}</th>
-            <th></th>
-            {% if sortable %}<td class="thin"></td>{% endif %}
-            <td class="thin"></td>
-            </thead>
-            <tbody>
-            {% for schedule in schedules %}
-                <tr data-id="{{ schedule.id }}" data-name="{{ schedule.name|t('site') }}">
-                    <th scope="row" data-title="{{ 'Name'|t('app') }}"><a
-                                href="{{ url('schedule/' ~ schedule.id) }}">{{ schedule.name }}</a></th>
+        <div class="tableview tablepane">
+            <table id="schedules" class="data fullwidth collapsible">
+                <thead>
+                    <th class="checkbox-cell selectallcontainer">
+                        <div class="checkbox checbox-select-all" role="checkbox" tabindex="0" aria-checked="false" aria-label="Select all"></div>
+                    </th>
+                    <th scope="col">{{ "Name"|t('app') }}</th>
                     {% if not groupId %}
-                        <th data-title="{{ 'Group'|t('app') }}">
-                            {% set groupUrl = url('schedule/groups/ungrouped') %}
-                            {% if schedule.group %}
-                                {% set groupUrl = url('schedule/groups/'~schedule.group.id) %}
-                            {% endif %}
-                            <a href="{{ groupUrl }}">{{ schedule.group ? schedule.group.name : 'Ungrouped'|t('schedule') }}</a>
-                        </th>
+                        <th scope="col">{{ "Group"|t('app') }}</th>
                     {% endif %}
-                    <td data-title="{{ 'Type'|t('app') }}">
-                        {% if schedule is missing %}
-                            <span class="error">{{ schedule.expectedType }}</span>
-                        {% else %}
-                            {{ schedule.displayName() }}
+                    <th scope="col">{{ "Type"|t('app') }}</th>
+                    <th scope="col">{{ "Timers"|t('schedule') }}</th>
+                    <th scope="col">{{ "Last Running Date"|t('schedule') }}</th>
+                    <th scope="col">{{ 'Enabled'|t('schedule') }}</th>
+                    <th scope="col">{{ "Logs"|t('schedule') }}</th>
+                    <th></th>
+                    {% if sortable %}<td class="thin"></td>{% endif %}
+                    <td class="thin"></td>
+                </thead>
+                <tbody>
+                {% for schedule in schedules %}
+                    <tr data-id="{{ schedule.id }}" data-name="{{ schedule.name|t('site') }}">
+                        <td class="checkbox-cell">
+                            {{ tag('div', {
+                                class: 'checkbox',
+                                title: 'Select'|t('app'),
+                                role: 'checkbox',
+                                aria: {
+                                    label: 'Select'|t('app'),
+                                    checked: 'false',
+                                },
+                            }) }}
+                        </td>
+                        <th scope="row" data-title="{{ 'Name'|t('app') }}"><a
+                                    href="{{ url('schedule/' ~ schedule.id) }}">{{ schedule.name }}</a></th>
+                        {% if not groupId %}
+                            <th data-title="{{ 'Group'|t('app') }}">
+                                {% set groupUrl = url('schedule/groups/ungrouped') %}
+                                {% if schedule.group %}
+                                    {% set groupUrl = url('schedule/groups/'~schedule.group.id) %}
+                                {% endif %}
+                                <a href="{{ groupUrl }}">{{ schedule.group ? schedule.group.name : 'Ungrouped'|t('schedule') }}</a>
+                            </th>
                         {% endif %}
-                    </td>
-                    <td data-title="{{ 'Timers'|t('schedule') }}">
-                        {% if schedule.timers|length == 0 %}
-                            <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}">{{ "Edit Timers"|t('schedule') }}</a>
-                        {% else %}
-                            <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}">{{ "Edit Timers ({count})"|t('schedule', { count: schedule.timers|length }) }}</a>
-                            <a class="menubtn" title="{{ 'Timers'|t('schedule') }}"></a>
-                            <div class="menu">
-                                <ul>
-                                    {% for timer in schedule.timers %}
-                                        <li>
-                                            <a href="{{ url('schedule/' ~ schedule.id ~ '/timers/' ~ timer.id) }}">{{ timer ~ ' ' ~ timer.cronDescription }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                    </td>
-                    <td data-title="{{ 'Last Running Date'|t('schedule') }}">
-                        {% if schedule.lastFinishedDate is not empty %}
-                            {% if schedule.lastStatus %}
-                                <span class="status green"></span>
+                        <td data-title="{{ 'Type'|t('app') }}">
+                            {% if schedule is missing %}
+                                <span class="error">{{ schedule.expectedType }}</span>
                             {% else %}
-                                <span class="status red"></span>
+                                {{ schedule.displayName() }}
                             {% endif %}
-                            {{ schedule.lastFinishedDate|datetime('short') }}
-                        {% endif %}
-                    </td>
-                    <td>
-                         {{ forms.lightswitchField({
-                             name: 'enabled',
-                             small: true,
-                             on: schedule.enabled,
-                         }) }}
-                    </td>
-                    <td><a class="go" href="{{ url('schedule/' ~ schedule.id ~ '/logs') }}"></a></td>
-                    {% if sortable %}<td class="thin"><a class="move icon" title="{{ 'Reorder'|t('app') }}" role="button"></a></td>{% endif %}
-                    <td class="thin"><a class="delete icon" title="{{ 'Delete'|t('app') }}" role="button"></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        </td>
+                        <td data-title="{{ 'Timers'|t('schedule') }}">
+                            {% if schedule.timers|length == 0 %}
+                                <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}">{{ "Edit Timers"|t('schedule') }}</a>
+                            {% else %}
+                                <a href="{{ url('schedule/' ~ schedule.id ~ '/timers') }}">{{ "Edit Timers ({count})"|t('schedule', { count: schedule.timers|length }) }}</a>
+                                <a class="menubtn" title="{{ 'Timers'|t('schedule') }}"></a>
+                                <div class="menu">
+                                    <ul>
+                                        {% for timer in schedule.timers %}
+                                            <li>
+                                                <a href="{{ url('schedule/' ~ schedule.id ~ '/timers/' ~ timer.id) }}">{{ timer ~ ' ' ~ timer.cronDescription }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td data-title="{{ 'Last Running Date'|t('schedule') }}">
+                            {% if schedule.lastFinishedDate is not empty %}
+                                {% if schedule.lastStatus %}
+                                    <span class="status green"></span>
+                                {% else %}
+                                    <span class="status red"></span>
+                                {% endif %}
+                                {{ schedule.lastFinishedDate|datetime('short') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                             {{ forms.lightswitchField({
+                                 name: 'enabled',
+                                 small: true,
+                                 on: schedule.enabled,
+                             }) }}
+                        </td>
+                        <td><a class="go" href="{{ url('schedule/' ~ schedule.id ~ '/logs') }}"></a></td>
+                        <td class="thin"><a href="{{ actionUrl('schedule/schedules/duplicate-schedule', { 'schedule_id': schedule.id }) }}" title="{{ 'Duplicate'|t('app') }}" role="button">{{ 'Duplicate'|t }}</a></td>
+                        {% if sortable %}<td class="thin"><a class="move icon" title="{{ 'Reorder'|t('app') }}" role="button"></a></td>{% endif %}
+                        <td class="thin"><a class="delete icon" title="{{ 'Delete'|t('app') }}" role="button"></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
+{% endblock %}
+
+{% block footer %}
+    <div id="count-spinner" class="spinner small hidden"></div>
+    <div id="count-container" class="light">&nbsp;{{ schedules|length }} {{ 'Schedules'|t('schedule') }}</div>
+    <div id="actions-container" class="flex hidden">
+        <div>
+            <form>
+                <button type="button" class="btn secondary menubtn" aria-label="{{ "Set status"|t('app') }}">{{ "Set status"|t('app') }}</button>
+                <div class="menu">
+                    <ul>
+                        <li><a class="schedules-set-status" data-param="status" data-value="enabled"><span class="status enabled"></span> {{ "Enabled"|t('app') }}</a></li>
+                        <li><a class="schedules-set-status" data-param="status" data-value="disabled"><span class="status disabled"></span> {{ "Disabled"|t('app') }}</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div></div>
 {% endblock %}
 
 {% js %}

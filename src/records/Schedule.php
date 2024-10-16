@@ -17,7 +17,6 @@ use GlueAgency\schedule\db\Table;
  * @property int $id
  * @property int $groupId
  * @property string $name
- * @property string $handle
  * @property string $description
  * @property string $type
  * @property string $user

@@ -11,10 +11,53 @@
         {
             $groups: null,
             $selectedGroup: null,
+            $schedules: null,
+            $selectedSchedules: null,
+            $totalSchedules: null,
 
             init() {
                 this.$groups = $('#groups');
                 this.$selectedGroup = this.$groups.find('a.sel:first');
+                this.$selectAllButton = $('#schedules div.checkbox.checbox-select-all');
+
+                this.$allSchedules = $('#schedules tr[data-id]');
+                this.$totalSchedules = this.$allSchedules.length;
+
+                this.actions = $('#content #actions-container');
+
+                $('#schedules div.checkbox:not(.checbox-select-all)').on('click', (el) => {
+                    $(el.target).closest('tr').toggleClass('sel');
+                    const selectedAmount = $('#schedules tr.sel').length;
+                    if (selectedAmount > 0) {
+                        if (selectedAmount < this.$totalSchedules) {
+                            this.$selectAllButton.removeClass('checked');
+                            this.$selectAllButton.addClass('indeterminate');
+                        } else {
+                            this.$selectAllButton.removeClass('indeterminate');
+                            this.$selectAllButton.addClass('checked');
+                        }
+                    } else {
+                        this.$selectAllButton.removeClass('checked');
+                        this.$selectAllButton.removeClass('indeterminate');
+                    }
+                    this.toggleActions(selectedAmount > 0)
+                })
+
+                $('#schedules div.checbox-select-all').on('click', (el) => {
+                    if ($(el.target).hasClass('checked')) {
+                        this.$allSchedules.removeClass('sel');
+                        $(el.target).removeClass('indeterminate')
+                        $(el.target).removeClass('checked')
+                    } else {
+                        this.$allSchedules.addClass('sel');
+                        $(el.target).removeClass('indeterminate')
+                        $(el.target).addClass('checked')
+                    }
+                    this.toggleActions($(el.target).hasClass('checked'))
+                })
+
+                $(document).on('click', '.schedules-set-status[data-param="status"]', this.toggleMultiple);
+
                 this.addListener($('#newgroupbtn'), 'activate', 'addNewGroup');
 
                 const $groupSettingsBtn = $('#groupsettingsbtn');
@@ -38,8 +81,9 @@
                     }, this);
                 }
 
-                $('#content .lightswitch').on('change', function() {
+                $('#schedules .lightswitch').on('change', function() {
                     const enabled = $(this).data('lightswitch').on;
+                    console.log(enabled)
                     const data = {
                         id: $(this).closest('tr').data('id'),
                         enabled: enabled ? '1' : '0'
@@ -51,6 +95,31 @@
                             Craft.cp.displayError(Craft.t('app', 'An unknown error occurred.'));
                         }
                     });
+                });
+            },
+
+            toggleActions(show) {
+                if (show) {
+                    this.actions.removeClass('hidden');
+                } else {
+                    this.actions.addClass('hidden');
+                }
+            },
+
+            toggleMultiple(e) {
+                console.log('test')
+                const ids = Array.from($('#schedules tr.sel')).map(schedule => schedule.dataset.id)
+                const enabled = e.currentTarget.dataset.value === "enabled";
+                const data = {
+                    ids,
+                    enabled: enabled ? '1' : '0'
+                };
+                Craft.postActionRequest('schedule/schedules/toggle-multiple-schedules', data, (response, textStatus, jqXHR) => {
+                    if (textStatus === 'success' && response.success) {
+                        window.location.reload();
+                    } else {
+                        Craft.cp.displayError(Craft.t('app', 'An unknown error occurred.'));
+                    }
                 });
             },
 

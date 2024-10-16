@@ -127,11 +127,6 @@ class Schedules extends Component
     private $_schedulesById;
 
     /**
-     * @var ScheduleInterface[]|null
-     */
-    private $_schedulesByHandle;
-
-    /**
      * Returns all category groups.
      *
      * @return ScheduleGroup[]
@@ -329,14 +324,12 @@ class Schedules extends Component
         }
 
         $this->_schedulesById = [];
-        $this->_schedulesByHandle = [];
 
         $results = $this->_createScheduleQuery()->all();
         foreach ($results as $result) {
             /** @var Schedule $schedule */
             $schedule = $this->createSchedule($result);
             $this->_schedulesById[$schedule->id] = $schedule;
-            $this->_schedulesByHandle[$schedule->handle] = $schedule;
         }
 
         if (!$this->force) {
@@ -382,7 +375,6 @@ class Schedules extends Component
             /** @var Schedule $schedule */
             $schedule = $this->createSchedule($result);
             $this->_schedulesById[$schedule->id] = $schedule;
-            $this->_schedulesByHandle[$schedule->handle] = $schedule;
             $schedules[] = $schedule;
         }
 
@@ -409,28 +401,6 @@ class Schedules extends Component
             ->one();
 
         return $this->_schedulesById[$scheduleId] = $result ? $this->createSchedule($result) : null;
-    }
-
-    /**
-     * @param string $handle
-     * @return ScheduleInterface|null
-     * @throws InvalidConfigException
-     */
-    public function getScheduleByHandle(string $handle): ?ScheduleInterface
-    {
-        if ($this->_schedulesByHandle && array_key_exists($handle, $this->_schedulesByHandle)) {
-            return $this->_schedulesByHandle[$handle];
-        }
-
-        if ($this->_fetchedAllSchedules) {
-            return null;
-        }
-
-        $result = $this->_createScheduleQuery()
-            ->where(['handle' => $handle])
-            ->one();
-
-        return $this->_schedulesByHandle[$handle] = $result ? $this->createSchedule($result) : null;
     }
 
     /**
@@ -513,7 +483,6 @@ class Schedules extends Component
             'id' => $request->getBodyParam('scheduleId'),
             'groupId' => $request->getBodyParam('groupId'),
             'name' => $request->getBodyParam('name'),
-            'handle' => $request->getBodyParam('handle'),
             'description' => $request->getBodyParam('description'),
             'type' => $type,
             'settings' => $request->getBodyParam('types.' . $type, []),
@@ -543,6 +512,9 @@ class Schedules extends Component
      * @param ScheduleInterface $schedule
      * @param bool $runValidation
      * @return bool
+     * @throws Exception
+     * @throws ScheduleException
+     * @throws Throwable
      */
     public function saveSchedule(ScheduleInterface $schedule, bool $runValidation = true): bool
     {
@@ -578,7 +550,6 @@ class Schedules extends Component
 
             $record->groupId = $schedule->groupId;
             $record->name = $schedule->name;
-            $record->handle = $schedule->handle;
             $record->description = $schedule->description;
             $record->type = get_class($schedule);
             $record->user = $schedule->user;
@@ -600,7 +571,6 @@ class Schedules extends Component
         }
 
         $this->_schedulesById[$schedule->id] = $schedule;
-        $this->_schedulesByHandle[$schedule->handle] = $schedule;
 
         $schedule->afterSave($isNewSchedule);
 
@@ -709,7 +679,6 @@ class Schedules extends Component
                 'schedules.id',
                 'schedules.groupId',
                 'schedules.name',
-                'schedules.handle',
                 'schedules.description',
                 'schedules.type',
                 'schedules.user',
